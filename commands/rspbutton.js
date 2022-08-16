@@ -1,7 +1,10 @@
 const { SlashCommandBuilder } = require("discord.js");
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const { channel } = require("node:diagnostics_channel");
 const wait = require("node:timers/promises").setTimeout;
 
+const bot = ["1008665066041774130"];
+const channelId = "1009096382432411819";
 const gamedata = new Map();
 let isStarted = false;
 
@@ -29,12 +32,18 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
-    if (isStarted == true) {
-      await interaction.reply({
-        content: `이미 게임이 진행중이야.. 조금만 기다려봐`,
-        ephemeral: true,
-      });
+    if (interaction.channel.id != channelId) {
+      const thisChannel = interaction.client.channels.cache.get(channelId);
+      await interaction.reply(`${thisChannel}에서 명령어를 이용해줘😉`);
+      return;
     } else {
+      if (isStarted == true) {
+        await interaction.reply({
+          content: `이미 게임이 진행중이야.. 조금만 기다려봐`,
+          ephemeral: true,
+        });
+        return;
+      }
       let winner = null;
       isStarted = true;
 
@@ -42,6 +51,20 @@ module.exports = {
       //seconuser : vs
       firstuser = interaction.user;
       seconduser = interaction.options.getUser("selectuser");
+
+      if (interaction.user === seconduser) {
+        await interaction.reply(
+          `5252~ 차라리 화장실 가서 거울이랑 가위바위보를 하지 그래??`
+        );
+        isStarted = false;
+        return;
+      } else if (bot.includes(seconduser.id)) {
+        await interaction.reply(
+          `🤖 삐빕 - 로봇은 가위바위보를 할 수 없습니다. 삐빕- 🤖`
+        );
+        isStarted = false;
+        return;
+      }
 
       // [(firstuser => null),(seconduser => null)]
       gamedata.set(firstuser, null);
