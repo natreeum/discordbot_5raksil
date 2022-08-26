@@ -37,24 +37,23 @@ module.exports = {
     ),
   async execute(interaction) {
     const gameCode = code;
-    code ++;
+    code++;
     interactions[gameCode] = interaction;
-    
+
     // channel Lock
     if (interactions[gameCode].channel.id != channelId) {
-      const thisChannel = interactions[gameCode].client.channels.cache.get(channelId);
-      await interactions[gameCode].reply(`${thisChannel}에서 명령어를 이용해줘😉`);
+      const thisChannel =
+        interactions[gameCode].client.channels.cache.get(channelId);
+      await interactions[gameCode].reply(
+        `${thisChannel}에서 명령어를 이용해줘😉`
+      );
       return;
     }
 
-    // Play Lock
-    // if (isStarted == true) {
-    //   await interactions.reply({
-    //     content: `이미 게임이 진행중이야.. 조금만 기다려봐`,
-    //     ephemeral: true,
-    //   });
-    //   return;
-    // }
+    // BTC Balance Check
+    // player 1
+    // player 2
+
     let winner = null;
     isStarted = true;
 
@@ -62,14 +61,13 @@ module.exports = {
     //seconuser : vs
     firstuser = interactions[gameCode].user;
     seconduser = interactions[gameCode].options.getUser("selectuser");
-
     if (firstuser === seconduser) {
       await interactions[gameCode].reply(
         `5252~ 차라리 화장실 가서 거울이랑 가위바위보를 하지 그래??`
       );
       isStarted = false;
       return;
-    } else if (bot.includes(seconduser.id)) {
+    } else if (seconduser.bot === true) {
       await interactions[gameCode].reply(
         `🤖 삐빕 - 로봇은 가위바위보를 할 수 없습니다. 삐빕- 🤖`
       );
@@ -113,29 +111,36 @@ module.exports = {
       ["scissors", "rock", "paper"].includes(i.customId) &&
       [firstuser, seconduser].includes(i.user);
 
-    const collector = interactions[gameCode].channel.createMessageComponentCollector({
+    const collector = interactions[
+      gameCode
+    ].channel.createMessageComponentCollector({
       filter,
       time: 5000,
     });
 
     collector.on("collect", async (i) => {
       if (i.customId === "scissors") {
-        // await i.deferUpdate();
-        // await interactions.followUp(`${i.user}는 버튼을 눌렀어!`);
+        await i.update({
+          content: `[✌  ✊  ✋]\n${firstuser}vs${seconduser}\n가위바위보를 시작하지... 아래 버튼을 5초 안에 눌러!!!`,
+          components: [row],
+        });
         gamedata.set(i.user, 2);
       } else if (i.customId === "rock") {
-        // await i.deferUpdate();
-        // await interactions.followUp(`${i.user}는 버튼을 눌렀어!`);
+        await i.update({
+          content: `[✌  ✊  ✋]\n${firstuser}vs${seconduser}\n가위바위보를 시작하지... 아래 버튼을 5초 안에 눌러!!!`,
+          components: [row],
+        });
         gamedata.set(i.user, 1);
       } else if (i.customId === "paper") {
-        // await i.deferUpdate();
-        // await interactions.followUp(`${i.user}는 버튼을 눌렀어!`);
+        await i.update({
+          content: `[✌  ✊  ✋]\n${firstuser}vs${seconduser}\n가위바위보를 시작하지... 아래 버튼을 5초 안에 눌러!!!`,
+          components: [row],
+        });
         gamedata.set(i.user, 3);
       }
     });
 
     collector.on("end", async (collected) => {
-      
       function delay(ms) {
         return new Promise((resolve) => setTimeout(resolve, ms));
       }
@@ -183,9 +188,7 @@ module.exports = {
         winner = "invalid";
         gamedata.set(firstuser, 4);
         sendMessage += `${firstuser}는 쫄았나봐 ㅋㅋㅋ\n에이 재미 없다. 무효!!!\n`;
-        await interactions[gameCode].editReply(
-          `${sendMessage}`
-        );
+        await interactions[gameCode].editReply(`${sendMessage}`);
       }
       //2유저가 안눌렀을 때
       else if (
@@ -195,9 +198,7 @@ module.exports = {
         winner = "invalid";
         gamedata.set(seconduser, 4);
         sendMessage += `${seconduser}는 쫄았나봐 ㅋㅋㅋ\n에이 재미 없다. 무효!!!\n`;
-        await interactions[gameCode].editReply(
-          `${sendMessage}`
-        );
+        await interactions[gameCode].editReply(`${sendMessage}`);
       }
       //둘다 버튼을 안눌렀을 때
       else if (
@@ -207,7 +208,7 @@ module.exports = {
         winner = "invalid";
         gamedata.set(firstuser, 4);
         gamedata.set(seconduser, 4);
-        sendMessage += `🤔 뭐야 둘이 게임 안해??? 🤔\n`
+        sendMessage += `🤔 뭐야 둘이 게임 안해??? 🤔\n`;
         await interactions[gameCode].editReply(`${sendMessage}`);
       }
       //둘 다 뭐라도 냈을 때
@@ -223,31 +224,30 @@ module.exports = {
         else winner = "DRAW";
       }
       if (winner === "DRAW") {
-        sendMessage += `${firstuser} : ${chat[gamedata.get(firstuser)]} - ${seconduser} : ${
+        sendMessage += `${firstuser} : ${
+          chat[gamedata.get(firstuser)]
+        } - ${seconduser} : ${
           chat[gamedata.get(seconduser)]
-        }\n오~ 둘이 통했나본데~ 비겼어!!`
-        await interactions[gameCode].editReply(
-          `${sendMessage}`
-        );
+        }\n오~ 둘이 통했나본데~ 비겼어!!`;
+        await interactions[gameCode].editReply(`${sendMessage}`);
         isStarted = false;
       } else if (winner === "invalid") {
-        sendMessage += `${firstuser} : ${chat[gamedata.get(firstuser)]} - ${seconduser} : ${
+        sendMessage += `${firstuser} : ${
+          chat[gamedata.get(firstuser)]
+        } - ${seconduser} : ${
           chat[gamedata.get(seconduser)]
-        }\n이번 게임은 무효야!!`
-        await interactions[gameCode].editReply(
-          `${sendMessage}`
-        );
+        }\n이번 게임은 무효야!!`;
+        await interactions[gameCode].editReply(`${sendMessage}`);
         isStarted = false;
       } else {
-        sendMessage += `${firstuser} : ${chat[gamedata.get(firstuser)]} - ${seconduser} : ${
+        sendMessage += `${firstuser} : ${
+          chat[gamedata.get(firstuser)]
+        } - ${seconduser} : ${
           chat[gamedata.get(seconduser)]
-        }\nWinner : ${winner}`
-        await interactions[gameCode].editReply(
-          `${sendMessage}`
-        );
+        }\nWinner : ${winner}`;
+        await interactions[gameCode].editReply(`${sendMessage}`);
         isStarted = false;
       }
     });
-    
   },
 };

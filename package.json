@@ -10,6 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "@discordjs/rest": "^1.0.1",
-    "discord.js": "^14.1.2"
+    "discord.js": "^14.1.2",
+    "dotenv": "^16.0.1",
+    "got": "^11.8.5"
   }
 }
