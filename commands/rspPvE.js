@@ -61,7 +61,6 @@ module.exports = {
     const betAmountBeforeFee = interactions[gameCode].options.getInteger("bet");
     const RAW_betAmount = betAmountBeforeFee * FEE_TO_CALCULATABLE;
     const betAmount = Math.round(RAW_betAmount * 100) / 100;
-    console.log(betAmount);
 
     // channel Lock
     if (interactions[gameCode].channel.id != channelId) {
@@ -115,9 +114,9 @@ module.exports = {
     }
     await delay(200);
 
-    let sendMessage = `${firstuser} : ${
-      chat[gamedata.get(firstuser)]
-    } −−−−−− 🆚 −−−−−− ${chat[gamedata.get(seconduser)]} : ${seconduser}`;
+    let sendMessage = `${chat[gamedata.get(firstuser)]} : ${firstuser}\n🆚\n${
+      chat[gamedata.get(seconduser)]
+    } : ${seconduser}`;
 
     if (weapons[gamedata.get(firstuser)].weakTo === gamedata.get(seconduser)) {
       winner = seconduser;
@@ -129,7 +128,7 @@ module.exports = {
 
     //비겼을 때
     if (winner === "DRAW") {
-      sendMessage += `\n**[DRAW]**\n\n🤖 : 비겼으니 베팅금액의 ${drawRate}배인 ${
+      sendMessage += `\n\n**[DRAW]**\n\n🤖 : 비겼으니 베팅금액의 ${drawRate}배인 ${
         betAmount * drawRate
       } BTC🐞는 돌려줍니땅 삐빕`;
       //0.5배 지급
@@ -137,7 +136,7 @@ module.exports = {
     }
     //누군가 이겼을 때
     else {
-      sendMessage += `\n🎉**WINNER**🎉 : ${winner}`;
+      sendMessage += `\n\n**[WINNER]** : ${winner}`;
       if (winner === firstuser) {
         //2.5배 지급
         sendMessage += `\n\n🤖 : 나를 이겼으니 베팅금액의 ${winRate}배인 ${
