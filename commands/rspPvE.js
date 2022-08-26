@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require("discord.js");
+const { rawListeners } = require("node:process");
 // const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 // const { channel } = require("node:diagnostics_channel");
 // const { send } = require("node:process");
@@ -9,6 +10,11 @@ const gamedata = new Map();
 
 let code = 0;
 let interactions = [];
+
+const fee = 3;
+const FEE_TO_CALCULATABLE = 1 - fee / 100;
+const winRate = 2.5;
+const drawRate = 0.5;
 
 const weapons = {
   1: { weakTo: 3, strongTo: 2 },
@@ -26,7 +32,9 @@ const chat = {
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("혼자가위바위보")
-    .setDescription("컴퓨터와 가위바위보 게임을 합니다.")
+    .setDescription(
+      "🤖 : 나와 가위바위보를 해서 이기면 베팅금액의 2.5배를 줍니땅 삐빕"
+    )
     .addIntegerOption((option) =>
       option
         .setName("choice")
@@ -37,11 +45,23 @@ module.exports = {
           { name: "보", value: 3 }
         )
         .setRequired(true)
+    )
+    .addIntegerOption((option) =>
+      option
+        .setName("bet")
+        .setDescription(`베팅 금액을 입력합니다.(수수료 : ${fee}%)`)
+        .setRequired(true)
     ),
   async execute(interaction) {
     const gameCode = code;
     code++;
     interactions[gameCode] = interaction;
+
+    //calc bet amount without fee
+    const betAmountBeforeFee = interactions[gameCode].options.getInteger("bet");
+    const RAW_betAmount = betAmountBeforeFee * FEE_TO_CALCULATABLE;
+    const betAmount = Math.round(RAW_betAmount * 100) / 100;
+    console.log(betAmount);
 
     // channel Lock
     if (interactions[gameCode].channel.id != channelId) {
@@ -95,7 +115,9 @@ module.exports = {
     }
     await delay(200);
 
-    let sendMessage = "";
+    let sendMessage = `${firstuser} : ${
+      chat[gamedata.get(firstuser)]
+    } −−−−−− 🆚 −−−−−− ${chat[gamedata.get(seconduser)]} : ${seconduser}`;
 
     if (weapons[gamedata.get(firstuser)].weakTo === gamedata.get(seconduser)) {
       winner = seconduser;
@@ -107,22 +129,23 @@ module.exports = {
 
     //비겼을 때
     if (winner === "DRAW") {
-      sendMessage += `${firstuser} : ${
-        chat[gamedata.get(firstuser)]
-      } - ${seconduser} : ${
-        chat[gamedata.get(seconduser)]
-      }\n**[DRAW]**  컴퓨터랑 통하다니.. 당신..혹시...🤖?`;
+      sendMessage += `\n**[DRAW]**\n\n🤖 : 비겼으니 베팅금액의 ${drawRate}배인 ${
+        betAmount * drawRate
+      } BTC🐞는 돌려줍니땅 삐빕`;
+      //0.5배 지급
       await interactions[gameCode].editReply(`${sendMessage}`);
     }
     //누군가 이겼을 때
     else {
-      sendMessage += `${firstuser} : ${
-        chat[gamedata.get(firstuser)]
-      } - ${seconduser} : ${
-        chat[gamedata.get(seconduser)]
-      }\n🎉**WINNER**🎉 : ${winner}`;
+      sendMessage += `\n🎉**WINNER**🎉 : ${winner}`;
       if (winner === firstuser) {
         //2.5배 지급
+        sendMessage += `\n\n🤖 : 나를 이겼으니 베팅금액의 ${winRate}배인 ${
+          betAmount * winRate
+        } BTC🐞를 드립니땅 삐빕🤖`;
+      } else {
+        //2.5배 지급
+        sendMessage += `\n\n🤖 : 내가 이겼으니 베팅금액은 **벅크셔해서웨이**에서 좋은 곳에 쓰겠습니땅! 삐빕`;
       }
       await interactions[gameCode].editReply(`${sendMessage}`);
     }
