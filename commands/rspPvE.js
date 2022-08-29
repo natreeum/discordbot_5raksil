@@ -56,7 +56,7 @@ module.exports = {
   async execute(interaction) {
     const gameCode = code;
     code++;
-    interactions[gameCode] = interaction;
+    interactions.push(interaction);
     const user = interactions[gameCode].user;
     console.log(`gamecode : ${gameCode}`);
     //calc bet amount without fee
