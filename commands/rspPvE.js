@@ -13,7 +13,7 @@ const gamedata = new Map();
 const staticFee = 0;
 const fee = 0;
 const FEE_TO_CALCULATABLE = 1 - fee / 100;
-const winRate = 2.3;
+const winRate = 2;
 const drawRate = 0.3;
 
 const weapons = {
@@ -53,6 +53,7 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
+    const user = interaction.user;
     //multiple game check
     if (gamedata.has(user)) {
       await interaction.reply({
@@ -62,7 +63,6 @@ module.exports = {
       return;
     }
     await interaction.deferReply(`🤖 : 삐빕 삐빕.. 가위바위보 진행중..`);
-    const user = interaction.user;
 
     //calc bet amount without fee
     const betAmountBeforeFee = interaction.options.getInteger("bet");
