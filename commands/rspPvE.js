@@ -13,8 +13,8 @@ const gamedata = new Map();
 const staticFee = 0;
 const fee = 0;
 const FEE_TO_CALCULATABLE = 1 - fee / 100;
-const winRate = 1.8;
-const drawRate = 0.9;
+const winRate = 2.3;
+const drawRate = 0.3;
 
 const weapons = {
   1: { weakTo: 3, strongTo: 2 },
@@ -53,6 +53,14 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
+    //multiple game check
+    if (gamedata.has(user)) {
+      await interaction.reply({
+        content: `형은 이미 진행중인 게임이 있네.. 잠시 후에 시도해봐!`,
+        ephemeral: true,
+      });
+      return;
+    }
     await interaction.deferReply(`🤖 : 삐빕 삐빕.. 가위바위보 진행중..`);
     const user = interaction.user;
 
@@ -80,15 +88,6 @@ module.exports = {
       return;
     }
 
-    //multiple game check
-    if (gamedata.has(user)) {
-      await interaction.reply({
-        content: `형은 이미 진행중인 게임이 있네.. 잠시 후에 시도해봐!`,
-        ephemeral: true,
-      });
-      return;
-    }
-
     //BTC Balance check
     const balances = await bankManager.getBalances(user);
     const storageBalance = balances.data.storage;
@@ -101,7 +100,7 @@ module.exports = {
       });
       return;
     }
-    if (storageBalance < betAmountBeforeFee * 2) {
+    if (storageBalance < betAmountBeforeFee * winRate) {
       await interaction.reply({
         content: `벅크셔해서웨이 금고에 형이 이겼을 때 형한테 줄 돈이 충분하지 않아... 조금만 더 적은 금액으로 베팅해줄 수 있어..?😭`,
         ephemeral: true,
@@ -203,7 +202,7 @@ module.exports = {
 
       sendMessage += `\n\n**[DRAW]**\n\n🤖 : 삐빕.. 비겼습니땅! \n베팅금액의 ${
         drawRate * 100
-      }%인 ${returnBTC} BTC🐞는 집가면서 국밥이라도 챙겨드시라고 돌려줍니땅 삐빕 | 잔고 : [${
+      }%인 ${returnBTC} BTC🐞는 집가면서 국밥이라도 챙겨드시라고 돌려줍니땅 | 잔고 : [${
         resultBalance.point.current
       } BTC]`;
 
