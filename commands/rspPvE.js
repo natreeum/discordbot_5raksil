@@ -5,17 +5,16 @@ const BankManager = require(`../bank/BankManager`);
 const bankManager = new BankManager();
 const wait = require("node:timers/promises").setTimeout;
 
-const channelId = "1009096382432411819";
+const channelId = ["962244779171799060"];
+// const channelId = "1009096382432411819";
 const gamedata = new Map();
 
-let code = 0;
-let interactions = [];
-
 //fee is percentage point
-const fee = 1;
+const staticFee = 0;
+const fee = 0;
 const FEE_TO_CALCULATABLE = 1 - fee / 100;
-const winRate = 2.5;
-const drawRate = 0.2;
+const winRate = 1.8;
+const drawRate = 0.9;
 
 const weapons = {
   1: { weakTo: 3, strongTo: 2 },
@@ -54,65 +53,67 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
-    const gameCode = code;
-    code++;
-    interactions.push(interaction);
-    const user = interactions[gameCode].user;
-    console.log(`gamecode : ${gameCode}`);
+    const user = interaction.user;
+
     //calc bet amount without fee
-    const betAmountBeforeFee = interactions[gameCode].options.getInteger("bet");
+    const betAmountBeforeFee = interaction.options.getInteger("bet");
     const RAW_betAmount = betAmountBeforeFee * FEE_TO_CALCULATABLE;
     const betAmount = Math.round(RAW_betAmount * 100) / 100;
 
     // channel Lock
-    if (interactions[gameCode].channel.id != channelId) {
-      const thisChannel =
-        interactions[gameCode].client.channels.cache.get(channelId);
-      await interactions[gameCode].reply(
-        `${thisChannel}에서 명령어를 이용해줘😉`
-      );
+    if (!channelId.includes(interaction.channel.id)) {
+      await interaction.reply({
+        content: `<#${channelId}>에서 명령어를 이용해줘😉`,
+        ephemeral: true,
+      });
       return;
     }
 
     //minimum betAmount
     const MINIMUM_BETAMOUNT = 5;
     if (betAmountBeforeFee < MINIMUM_BETAMOUNT) {
-      await interactions[gameCode].reply({
+      await interaction.reply({
         content: `최소 베팅 금액은 5 BTC야!`,
         ephemeral: true,
       });
       return;
     }
-    //BTC Balance Check
-    // const userBalance = await bankManager.getBalance(user);
-    // console.log(`userBalance : ${util.inspect(userBalance)}`);
 
-    //BTC Balance Check꼼수
+    //multiple game check
+    if (gamedata.has(user)) {
+      await interaction.reply({
+        content: `형은 이미 진행중인 게임이 있네.. 잠시 후에 시도해봐!`,
+        ephemeral: true,
+      });
+      return;
+    }
+
+    //BTC Balance
     const getUserBalance = await bankManager.getBalance(user);
-    const userBalance = getUserBalance.data.citizen;
-    const bankBalance = getUserBalance.data.storage;
-    if (userBalance < betAmountBeforeFee) {
-      await interactions[gameCode].reply({
+    const userBalance = getUserBalance.point.current;
+    if (userBalance < betAmountBeforeFee + staticFee) {
+      await interaction.reply({
         content: `형.. 잔액이 부족해.. \`/show\` 명령어로 잔액확인 한번 해봐!`,
         ephemeral: true,
       });
       return;
     }
-    if (bankBalance < betAmountBeforeFee * 2) {
-      await interactions[gameCode].reply({
-        content: `벅크셔해서웨이 금고에 형이 이겼을 때 형한테 줄 돈이 충분하지 않아... 조금만 더 적은 금액으로 베팅해줄 수 있어..?😭`,
-        ephemeral: true,
-      });
-      return;
-    }
+    // if (bankBalance < betAmountBeforeFee * 2) {
+    //   await interaction.reply({
+    //     content: `벅크셔해서웨이 금고에 형이 이겼을 때 형한테 줄 돈이 충분하지 않아... 조금만 더 적은 금액으로 베팅해줄 수 있어..?😭`,
+    //     ephemeral: true,
+    //   });
+    //   return;
+    // }
 
     //Deposit BTC
+    // await bankManager.depositBTC(user, String(staticFee));
     await bankManager.depositBTC(user, String(betAmountBeforeFee));
 
     let winner = null;
 
     //firstuser : who entered command
-    const firstuser = interactions[gameCode].user;
+    const firstuser = interaction.user;
     const seconduser = "🤖";
 
     // [(firstuser => null)
@@ -122,87 +123,72 @@ module.exports = {
     gamedata.set(seconduser, computerChoice);
 
     //logic
-    const userChoice = await interaction.options.getInteger("choice");
-    gamedata.set(interaction.user, userChoice);
+    const userChoice = interaction.options.getInteger("choice");
+    gamedata.set(interaction.user, { user: userChoice, com: computerChoice });
 
     function delay(ms) {
       return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
-    // await interaction.reply(`🤖 : 삐빕 삐빕.. 가위바위보 진행중..`);
-    // await wait(500);
-    // for (let i = 0; i < 2; i++) {
-    //   await interactions[gameCode].editReply({
-    //     content: `${chat[1]}────────${chat[2]}`,
-    //     components: [],
-    //   });
-    //   await delay(100);
-    //   await interactions[gameCode].editReply({
-    //     content: `${chat[2]}────────${chat[3]}`,
-    //     components: [],
-    //   });
-    //   await delay(100);
-    //   await interactions[gameCode].editReply({
-    //     content: `${chat[3]}────────${chat[1]}`,
-    //     components: [],
-    //   });
-    // }
-    // await delay(200);
+    await interaction.deferReply(`🤖 : 삐빕 삐빕.. 가위바위보 진행중..`);
 
-    await interactions[gameCode].reply(`🤖 : 삐빕 삐빕.. 가위바위보 진행중..`);
-
+    //안내면진다 가위바위보
     await delay(200);
-    await interactions[gameCode].editReply({
+    await interaction.editReply({
       content: `.\n**안**`,
       components: [],
     });
     await delay(300);
-    await interactions[gameCode].editReply({
+    await interaction.editReply({
       content: `.\n**안 내**`,
       components: [],
     });
     await delay(100);
-    await interactions[gameCode].editReply({
+    await interaction.editReply({
       content: `.\n**안 내면**`,
       components: [],
     });
     await delay(200);
-    await interactions[gameCode].editReply({
+    await interaction.editReply({
       content: `.\n**안 내면 진**`,
       components: [],
     });
     await delay(200);
-    await interactions[gameCode].editReply({
+    await interaction.editReply({
       content: `.\n**안 내면 진다!**`,
       components: [],
     });
 
     await delay(500);
-    await interactions[gameCode].editReply({
+    await interaction.editReply({
       content: `.\n**안 내면 진다!** 가위!`,
       components: [],
     });
     await delay(200);
-    await interactions[gameCode].editReply({
+    await interaction.editReply({
       content: `.\n**안 내면 진다!** 가위! 바위!`,
       components: [],
     });
     await delay(200);
-    await interactions[gameCode].editReply({
+    await interaction.editReply({
       content: `.\n**안 내면 진다!** 가위! 바위! 보!`,
       components: [],
     });
 
     await delay(200);
 
-    let sendMessage = `수수료 차감된 베팅 금액 : ${betAmount}\n${
-      chat[gamedata.get(firstuser)]
-    } : ${firstuser}\n🆚\n${chat[gamedata.get(seconduser)]} : ${seconduser}`;
+    let sendMessage = `${
+      chat[gamedata.get(firstuser).user]
+    } : ${firstuser}\n🆚\n${chat[gamedata.get(firstuser).com]} : ${seconduser}`;
 
-    if (weapons[gamedata.get(firstuser)].weakTo === gamedata.get(seconduser)) {
+    if (
+      weapons[gamedata.get(firstuser).user].weakTo ===
+      gamedata.get(firstuser).com
+    ) {
       winner = seconduser;
     } else if (
-      weapons[gamedata.get(firstuser)].strongTo === gamedata.get(seconduser)
+      weapons[gamedata.get(firstuser).user].strongTo ===
+      gamedata.get(firstuser).com
     ) {
       winner = firstuser;
     } else winner = "DRAW";
@@ -214,9 +200,13 @@ module.exports = {
       await bankManager.withdrawBTC(user, String(returnBTC));
       const resultBalance = await bankManager.getBalance(user);
 
-      sendMessage += `\n\n**[DRAW]**\n\n🤖 : 비겼으니 베팅금액의 ${drawRate}배인 ${returnBTC} BTC🐞는 돌려줍니땅 삐빕 | 잔고 : [${resultBalance.data.citizen} BTC]`;
+      sendMessage += `\n\n**[DRAW]**\n\n🤖 : 삐빕.. 비겼습니땅 서버수수료로${Math.round(
+        (1 - drawRate) * 100
+      )}%만 가져가겠습니땅 ${returnBTC} BTC🐞는 돌려줍니땅 삐빕 | 잔고 : [${
+        resultBalance.point.current
+      } BTC]`;
 
-      await interactions[gameCode].editReply(`${sendMessage}`);
+      await interaction.editReply(`${sendMessage}`);
     }
     //누군가 이겼을 때
     else {
@@ -226,12 +216,13 @@ module.exports = {
         const winBTC = Math.round(betAmount * winRate * 100) / 100;
         await bankManager.withdrawBTC(user, String(winBTC));
         const resultBalance = await bankManager.getBalance(user);
-        sendMessage += `\n\n🤖 : 나를 이겼으니 베팅금액의 ${winRate}배인 ${winBTC} BTC🐞를 드립니땅 삐빕 | 잔고 : [${resultBalance.data.citizen} BTC]`;
+        sendMessage += `\n\n🤖 : 나를 이겼으니 베팅금액의 ${winRate}배인 ${winBTC} BTC🐞를 드립니땅 삐빕 | 잔고 : [${resultBalance.point.current} BTC]`;
       } else {
         const resultBalance = await bankManager.getBalance(user);
-        sendMessage += `\n\n🤖 : 내가 이겼으니 ${betAmountBeforeFee} BTC🐞는 **벅크셔해서웨이**에서 좋은 곳에 쓰겠습니땅! 감사합니땅! 삐빕 | 잔고 : [${resultBalance.data.citizen} BTC]`;
+        sendMessage += `\n\n🤖 : 내가 이겼으니 ${betAmountBeforeFee} BTC🐞는 **벅크셔해서웨이**에서 좋은 곳에 쓰겠습니땅! 감사합니땅! 삐빕 | 잔고 : [${resultBalance.point.current} BTC]`;
       }
-      await interactions[gameCode].editReply(`${sendMessage}`);
+      await interaction.editReply(`${sendMessage}`);
     }
+    gamedata.delete(user);
   },
 };

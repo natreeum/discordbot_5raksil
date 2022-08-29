@@ -91,33 +91,33 @@ class BankManager {
     }
   }
 
-  // async getBalance(user) {
-  //   try {
-  //     const url = `${api}/v2/users/${user.id}/points/bugtc`;
-  //     const json = await got
-  //       .get(url, {
-  //         headers: {
-  //           "X-Auth-Token": bugcity,
-  //         },
-  //       })
-  //       .json();
-  //     return json;
-  //   } catch (e) {
-  //     console.error(e);
-  //     throw new Error("BTC 밸런스 조회 실패");
-  //   }
-  // }
-
   async getBalance(user) {
-    const {
-      data: { state },
-    } = await this.withdrawBTC(user, 1);
-    if (state === "error") {
-      return { data: { state: "error" } };
+    try {
+      const url = `${api}/v2/users/${user.id}/points/bugtc`;
+      const json = await got
+        .get(url, {
+          headers: {
+            "X-Auth-Token": bugcity,
+          },
+        })
+        .json();
+      return json;
+    } catch (e) {
+      console.error(e);
+      throw new Error("BTC 밸런스 조회 실패");
     }
-    const json = await this.depositBTC(user, 1);
-    return json;
   }
+
+  // async getBalance(user) {
+  //   const {
+  //     data: { state },
+  //   } = await this.withdrawBTC(user, 1);
+  //   if (state === "error") {
+  //     return { data: { state: "error" } };
+  //   }
+  //   const json = await this.depositBTC(user, 1);
+  //   return json;
+  // }
 }
 
 module.exports = BankManager;
