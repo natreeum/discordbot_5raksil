@@ -108,16 +108,16 @@ class BankManager {
     }
   }
 
-  // async getBalance(user) {
-  //   const {
-  //     data: { state },
-  //   } = await this.withdrawBTC(user, 1);
-  //   if (state === "error") {
-  //     return { data: { state: "error" } };
-  //   }
-  //   const json = await this.depositBTC(user, 1);
-  //   return json;
-  // }
+  async getBalances(user) {
+    const {
+      data: { state },
+    } = await this.withdrawBTC(user, 1);
+    if (state === "error") {
+      return { data: { state: "error" } };
+    }
+    const json = await this.depositBTC(user, 1);
+    return json;
+  }
 }
 
 module.exports = BankManager;

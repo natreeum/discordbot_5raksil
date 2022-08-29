@@ -5,7 +5,7 @@ const BankManager = require(`../bank/BankManager`);
 const bankManager = new BankManager();
 const wait = require("node:timers/promises").setTimeout;
 
-const channelId = ["962244779171799060"];
+const channelId = ["962244779171799060", "939866440968863805"];
 // const channelId = "1009096382432411819";
 const gamedata = new Map();
 
@@ -53,6 +53,7 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
+    await interaction.deferReply(`🤖 : 삐빕 삐빕.. 가위바위보 진행중..`);
     const user = interaction.user;
 
     //calc bet amount without fee
@@ -88,7 +89,9 @@ module.exports = {
       return;
     }
 
-    //BTC Balance
+    //BTC Balance check
+    const balances = await bankManager.getBalances(user);
+    const storageBalance = balances.data.storage;
     const getUserBalance = await bankManager.getBalance(user);
     const userBalance = getUserBalance.point.current;
     if (userBalance < betAmountBeforeFee + staticFee) {
@@ -98,13 +101,13 @@ module.exports = {
       });
       return;
     }
-    // if (bankBalance < betAmountBeforeFee * 2) {
-    //   await interaction.reply({
-    //     content: `벅크셔해서웨이 금고에 형이 이겼을 때 형한테 줄 돈이 충분하지 않아... 조금만 더 적은 금액으로 베팅해줄 수 있어..?😭`,
-    //     ephemeral: true,
-    //   });
-    //   return;
-    // }
+    if (storageBalance < betAmountBeforeFee * 2) {
+      await interaction.reply({
+        content: `벅크셔해서웨이 금고에 형이 이겼을 때 형한테 줄 돈이 충분하지 않아... 조금만 더 적은 금액으로 베팅해줄 수 있어..?😭`,
+        ephemeral: true,
+      });
+      return;
+    }
 
     //Deposit BTC
     // await bankManager.depositBTC(user, String(staticFee));
@@ -129,8 +132,6 @@ module.exports = {
     function delay(ms) {
       return new Promise((resolve) => setTimeout(resolve, ms));
     }
-
-    await interaction.deferReply(`🤖 : 삐빕 삐빕.. 가위바위보 진행중..`);
 
     //안내면진다 가위바위보
     await delay(200);
@@ -200,9 +201,9 @@ module.exports = {
       await bankManager.withdrawBTC(user, String(returnBTC));
       const resultBalance = await bankManager.getBalance(user);
 
-      sendMessage += `\n\n**[DRAW]**\n\n🤖 : 삐빕.. 비겼습니땅 서버수수료로${Math.round(
-        (1 - drawRate) * 100
-      )}%만 가져가겠습니땅 ${returnBTC} BTC🐞는 돌려줍니땅 삐빕 | 잔고 : [${
+      sendMessage += `\n\n**[DRAW]**\n\n🤖 : 삐빕.. 비겼습니땅! \n베팅금액의 ${
+        drawRate * 100
+      }%인 ${returnBTC} BTC🐞는 집가면서 국밥이라도 챙겨드시라고 돌려줍니땅 삐빕 | 잔고 : [${
         resultBalance.point.current
       } BTC]`;
 
