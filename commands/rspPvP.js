@@ -89,9 +89,10 @@ module.exports = {
     const betAmount = betAmountBeforeFee - fee;
 
     // BTC Balance Check
-    const player1Balance = bankManager.getBalance(firstuser);
-    const player2Balance = bankManager.getBalance(seconduser);
-
+    const player1Balance = await bankManager.getBalance(firstuser);
+    const player2Balance = await bankManager.getBalance(seconduser);
+    console.log(player1Balance);
+    console.log(player2Balance);
     //minimum betAmount
     const MINIMUM_BETAMOUNT = 5;
     if (betAmountBeforeFee < MINIMUM_BETAMOUNT) {
@@ -110,18 +111,18 @@ module.exports = {
     let balanceCheckFlag = 0;
 
     if (
-      player1Balance < betAmountBeforeFee &&
-      player2Balance > betAmountBeforeFee
+      player1Balance.point.current < betAmountBeforeFee &&
+      player2Balance.point.current > betAmountBeforeFee
     ) {
       balanceCheckFlag = 1;
     } else if (
-      player2Balance < betAmountBeforeFee &&
-      player1Balance > betAmountBeforeFee
+      player2Balance.point.current < betAmountBeforeFee &&
+      player1Balance.point.current > betAmountBeforeFee
     ) {
       balanceCheckFlag = 2;
     } else if (
-      player1Balance < betAmountBeforeFee &&
-      player2Balance < betAmountBeforeFee
+      player1Balance.point.current < betAmountBeforeFee &&
+      player2Balance.point.current < betAmountBeforeFee
     ) {
       balanceCheckFlag = 3;
     }
@@ -175,7 +176,9 @@ module.exports = {
 
     //reply to message with buttons
     await interaction.editReply({
-      content: `[✌  ✊  ✋]\n**__${betAmountBeforeFee} BTC__** 걸고하는 가위바위보\n${firstuser}vs${seconduser}\n가위바위보를 시작하지... 아래 버튼을 5초 안에 눌러!!!`,
+      content: `[✌  ✊  ✋]\n**__${
+        betAmountBeforeFee - 1
+      } BTC__** 걸고하는 가위바위보\n${firstuser}vs${seconduser}\n가위바위보를 시작하지... 아래 버튼을 5초 안에 눌러!!!`,
       components: [row],
     });
 
@@ -192,7 +195,9 @@ module.exports = {
     collector.on("collect", async (i) => {
       if (i.customId === "scissors") {
         await i.update({
-          content: `[✌  ✊  ✋]\n**__${betAmountBeforeFee} BTC__** 걸고하는 가위바위보\n${firstuser}vs${seconduser}\n가위바위보를 시작하지... 아래 버튼을 5초 안에 눌러!!!`,
+          content: `[✌  ✊  ✋]\n**__${
+            betAmountBeforeFee - 1
+          } BTC__** 걸고하는 가위바위보\n${firstuser}vs${seconduser}\n가위바위보를 시작하지... 아래 버튼을 5초 안에 눌러!!!`,
           components: [row],
         });
         if (i.user == firstuser) {
@@ -203,7 +208,9 @@ module.exports = {
         // gamedata.set(i.user, 2);
       } else if (i.customId === "rock") {
         await i.update({
-          content: `[✌  ✊  ✋]\n**__${betAmountBeforeFee} BTC__** 걸고하는 가위바위보\n${firstuser}vs${seconduser}\n가위바위보를 시작하지... 아래 버튼을 5초 안에 눌러!!!`,
+          content: `[✌  ✊  ✋]\n**__${
+            betAmountBeforeFee - 1
+          } BTC__** 걸고하는 가위바위보\n${firstuser}vs${seconduser}\n가위바위보를 시작하지... 아래 버튼을 5초 안에 눌러!!!`,
           components: [row],
         });
         if (i.user == firstuser) {
@@ -213,7 +220,9 @@ module.exports = {
         }
       } else if (i.customId === "paper") {
         await i.update({
-          content: `[✌  ✊  ✋]\n**__${betAmountBeforeFee} BTC__** 걸고하는 가위바위보\n${firstuser}vs${seconduser}\n가위바위보를 시작하지... 아래 버튼을 5초 안에 눌러!!!`,
+          content: `[✌  ✊  ✋]\n**__${
+            betAmountBeforeFee - 1
+          } BTC__** 걸고하는 가위바위보\n${firstuser}vs${seconduser}\n가위바위보를 시작하지... 아래 버튼을 5초 안에 눌러!!!`,
           components: [row],
         });
         if (i.user == firstuser) {
@@ -232,50 +241,56 @@ module.exports = {
       //안내면진다 가위바위보
       await delay(200);
       await interaction.editReply({
-        content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안**`,
+        content: `베팅 금액 : ${betAmountBeforeFee - 1} BTC\n**안**`,
         components: [],
         ephemeral: false,
       });
       await delay(300);
       await interaction.editReply({
-        content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내**`,
+        content: `베팅 금액 : ${betAmountBeforeFee - 1} BTC\n**안 내**`,
         components: [],
         ephemeral: false,
       });
       await delay(100);
       await interaction.editReply({
-        content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면**`,
+        content: `베팅 금액 : ${betAmountBeforeFee - 1} BTC\n**안 내면**`,
         components: [],
         ephemeral: false,
       });
       await delay(200);
       await interaction.editReply({
-        content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면 진**`,
+        content: `베팅 금액 : ${betAmountBeforeFee - 1} BTC\n**안 내면 진**`,
         components: [],
         ephemeral: false,
       });
       await delay(200);
       await interaction.editReply({
-        content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면 진다!**`,
+        content: `베팅 금액 : ${betAmountBeforeFee - 1} BTC\n**안 내면 진다!**`,
         components: [],
         ephemeral: false,
       });
 
       await delay(500);
       await interaction.editReply({
-        content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면 진다!** 가위!`,
+        content: `베팅 금액 : ${
+          betAmountBeforeFee - 1
+        } BTC\n**안 내면 진다!** 가위!`,
         components: [],
         ephemeral: false,
       });
       await delay(200);
       await interaction.editReply({
-        content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면 진다!** 가위! 바위!`,
+        content: `베팅 금액 : ${
+          betAmountBeforeFee - 1
+        } BTC\n**안 내면 진다!** 가위! 바위!`,
         components: [],
         ephemeral: false,
       });
       await delay(200);
       await interaction.editReply({
-        content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면 진다!** 가위! 바위! 보!`,
+        content: `베팅 금액 : ${
+          betAmountBeforeFee - 1
+        } BTC\n**안 내면 진다!** 가위! 바위! 보!`,
         components: [],
         ephemeral: false,
       });
