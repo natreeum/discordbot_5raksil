@@ -81,6 +81,10 @@ module.exports = {
 
     // channel Lock
     if (!channelId.includes(interaction.channel.id)) {
+      let message = "가위바위보를 할 수 있는 채널을 알려줄게! : ";
+      for (let i of channelId) {
+        message += `i `;
+      }
       await interaction.editReply({
         content: `<#${channelId}>에서 명령어를 이용해줘😉`,
         ephemeral: true,
