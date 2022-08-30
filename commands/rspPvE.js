@@ -216,7 +216,7 @@ module.exports = {
       await bankManager.withdrawBTC(user, String(returnBTC));
       const resultBalance = await bankManager.getBalance(user);
 
-      sendMessage += `\n\n**[DRAW]**\n\n🤖 : 삐빕.. 비겼습니땅! \n베팅금액의 ${
+      sendMessage += `\n\n**[DRAW]**\n\n🤖[은은한 미소짓는]**로벅트** : 삐빕.. 비겼습니땅! \n베팅금액의 ${
         drawRate * 100
       }%인 ${returnBTC} BTC🐞는 집가면서 국밥이라도 챙겨드시라고 돌려줍니땅 | 잔고 : [${
         resultBalance.point.current
@@ -232,10 +232,10 @@ module.exports = {
         const winBTC = Math.round(betAmount * winRate * 100) / 100;
         await bankManager.withdrawBTC(user, String(winBTC));
         const resultBalance = await bankManager.getBalance(user);
-        sendMessage += `\n\n🤖 : 나를 이겼으니 베팅금액의 ${winRate}배인 ${winBTC} BTC🐞를 드립니땅 삐빕 | 잔고 : [${resultBalance.point.current} BTC]`;
+        sendMessage += `\n\n🤖[절망하는]**로벅트** : 나를 이겼으니 베팅금액의 ${winRate}배인 ${winBTC} BTC🐞를 드립니땅 삐빕 | 잔고 : [${resultBalance.point.current} BTC]`;
       } else {
         const resultBalance = await bankManager.getBalance(user);
-        sendMessage += `\n\n🤖 : 내가 이겼으니 ${betAmountBeforeFee} BTC🐞는 **벅크셔해서웨이**에서 좋은 곳에 쓰겠습니땅! 감사합니땅! 삐빕 | 잔고 : [${resultBalance.point.current} BTC]`;
+        sendMessage += `\n\n🤖[웃음짓는]**로벅트** : 내가 이겼으니 ${betAmountBeforeFee} BTC🐞는 **벅크셔해서웨이**에서 좋은 곳에 쓰겠습니땅! 감사합니땅! 삐빕 | 잔고 : [${resultBalance.point.current} BTC]`;
       }
       await interaction.editReply(`${sendMessage}`);
     }

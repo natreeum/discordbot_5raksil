@@ -91,8 +91,7 @@ module.exports = {
     // BTC Balance Check
     const player1Balance = await bankManager.getBalance(firstuser);
     const player2Balance = await bankManager.getBalance(seconduser);
-    console.log(player1Balance);
-    console.log(player2Balance);
+
     //minimum betAmount
     const MINIMUM_BETAMOUNT = 5;
     if (betAmountBeforeFee < MINIMUM_BETAMOUNT) {
