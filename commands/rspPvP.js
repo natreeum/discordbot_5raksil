@@ -339,9 +339,6 @@ module.exports = {
         else winner = "DRAW";
       }
 
-      console.log(`fUser : ${gamedata.get(firstuser).choice}`);
-      console.log(`sUser : ${gamedata.get(firstuser).seconduser.choice}`);
-
       if (winner === "DRAW") {
         sendMessage += `${
           chat[gamedata.get(firstuser).choice]
