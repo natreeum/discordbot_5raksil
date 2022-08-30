@@ -13,8 +13,9 @@ const gamedata = new Map();
 const staticFee = 0;
 const fee = 0;
 const FEE_TO_CALCULATABLE = 1 - fee / 100;
-const winRate = 2;
+const winRate = 2.5;
 const drawRate = 0.3;
+const betLimit = 1000;
 
 const weapons = {
   1: { weakTo: 3, strongTo: 2 },
@@ -68,6 +69,15 @@ module.exports = {
     const betAmountBeforeFee = interaction.options.getInteger("bet");
     const RAW_betAmount = betAmountBeforeFee * FEE_TO_CALCULATABLE;
     const betAmount = Math.round(RAW_betAmount * 100) / 100;
+
+    // limit bet amount
+    if (betAmountBeforeFee > betLimit) {
+      await interaction.editReply({
+        content: `형.. 지금 사업 초기라 ${betLimit} BTC 이하로만 베팅 가능해!`,
+        ephemeral: true,
+      });
+      return;
+    }
 
     // channel Lock
     if (!channelId.includes(interaction.channel.id)) {

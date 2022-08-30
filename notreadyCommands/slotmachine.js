@@ -35,8 +35,6 @@ module.exports = {
     .setName("슬롯머신")
     .setDescription(`슬롯 머신을 돌립니다. 비용 : ${price}원`),
   async execute(interaction) {
-    await bankManager.depositBTC(user, String(price));
-
     //channel lock
     const thisChannel = interaction.client.channels.cache.get(channelId);
     if (interaction.channel != thisChannel) {
@@ -56,9 +54,11 @@ module.exports = {
     //gameStart
     else {
       isStarted = true;
-      //대충 돈빠지는 코드
+      //price만큼 은행으로 입금
+      await bankManager.depositBTC(user, String(price));
+
       const message = await interaction.reply(
-        `${interaction.user}형이 룰렛을 돌리는 중이야!\n\n🦖 💩 🇰🇷 💰 🍔 🐮 🐞 ⭐️ 🐵 🍌\n\n⭐️ ⭐️ ⭐️ ⭐️ 나오면 잭팟!`
+        `${interaction.user}형이 룰렛을 돌리는 중이야!\n\n🦖 💩 🇰🇷 💰 🍔 🐮 🐞 ⭐️ 🐵 🍌\n\n🐞 🐞 🐞 🐞 나오면 잭팟!`
       );
       const result = {
         1: 10,
@@ -73,7 +73,7 @@ module.exports = {
           await interaction.editReply(
             `${
               interaction.user
-            }형이 룰렛을 돌리는 중이야!\n\n🦖 💩 🇰🇷 💰 🍔 🐮 🐞 ⭐️ 🐵 🍌\n\n⭐️ ⭐️ ⭐️ ⭐️ 나오면 잭팟! \n${
+            }형이 룰렛을 돌리는 중이야!\n\n🦖 💩 🇰🇷 💰 🍔 🐮 🐞 ⭐️ 🐵 🍌\n\n🐞 🐞 🐞 🐞 나오면 잭팟! \n${
               characters[result[1]]
             } ${characters[result[2]]} ${characters[result[3]]} ${
               characters[result[4]]
@@ -85,7 +85,7 @@ module.exports = {
           await interaction.editReply(
             `${
               interaction.user
-            }형이 룰렛을 돌리는 중이야!\n\n🦖 💩 🇰🇷 💰 🍔 🐮 🐞 ⭐️ 🐵 🍌\n\n⭐️ ⭐️ ⭐️ ⭐️ 나오면 잭팟! \n${
+            }형이 룰렛을 돌리는 중이야!\n\n🦖 💩 🇰🇷 💰 🍔 🐮 🐞 ⭐️ 🐵 🍌\n\n🐞 🐞 🐞 🐞 나오면 잭팟! \n${
               characters[result[1]]
             } ${characters[result[2]]} ${characters[result[3]]} ${
               characters[result[4]]
@@ -97,7 +97,7 @@ module.exports = {
         await interaction.editReply(
           `${
             interaction.user
-          }형이 룰렛을 돌리는 중이야!\n\n🦖 💩 🇰🇷 💰 🍔 🐮 🐞 ⭐️ 🐵 🍌\n\n⭐️ ⭐️ ⭐️ ⭐️ 나오면 잭팟! \n${
+          }형이 룰렛을 돌리는 중이야!\n\n🦖 💩 🇰🇷 💰 🍔 🐮 🐞 ⭐️ 🐵 🍌\n\n🐞 🐞 🐞 🐞 나오면 잭팟! \n${
             characters[result[1]]
           } ${characters[result[2]]} ${characters[result[3]]} ${
             characters[result[4]]
@@ -115,7 +115,7 @@ module.exports = {
         await interaction.editReply(
           `${
             interaction.user
-          }형이 룰렛을 돌리는 중이야!\n\n🦖 💩 🇰🇷 💰 🍔 🐮 🐞 ⭐️ 🐵 🍌\n\n⭐️ ⭐️ ⭐️ ⭐️ 나오면 잭팟! \n${
+          }형이 룰렛을 돌리는 중이야!\n\n🦖 💩 🇰🇷 💰 🍔 🐮 🐞 ⭐️ 🐵 🍌\n\n🐞 🐞 🐞 🐞 나오면 잭팟! \n${
             characters[result[1]]
           } ${characters[result[2]]} ${characters[result[3]]} ${
             characters[result[4]]
@@ -124,7 +124,7 @@ module.exports = {
         await interaction.editReply(
           `${
             interaction.user
-          }형이 룰렛을 돌리는 중이야!\n\n🦖 💩 🇰🇷 💰 🍔 🐮 🐞 ⭐️ 🐵 🍌\n\n⭐️ ⭐️ ⭐️ ⭐️ 나오면 잭팟! \n${
+          }형이 룰렛을 돌리는 중이야!\n\n🦖 💩 🇰🇷 💰 🍔 🐮 🐞 ⭐️ 🐵 🍌\n\n🐞 🐞 🐞 🐞 나오면 잭팟! \n${
             characters[result[1]]
           } ${characters[result[2]]} ${characters[result[3]]} ${
             characters[result[4]]
@@ -133,7 +133,7 @@ module.exports = {
         await interaction.editReply(
           `${
             interaction.user
-          }형이 룰렛을 돌리는 중이야!\n\n🦖 💩 🇰🇷 💰 🍔 🐮 🐞 ⭐️ 🐵 🍌\n\n⭐️ ⭐️ ⭐️ ⭐️ 나오면 잭팟! \n${
+          }형이 룰렛을 돌리는 중이야!\n\n🦖 💩 🇰🇷 💰 🍔 🐮 🐞 ⭐️ 🐵 🍌\n\n🐞 🐞 🐞 🐞 나오면 잭팟! \n${
             characters[result[1]]
           } ${characters[result[2]]} ${characters[result[3]]} ${
             characters[result[4]]
@@ -145,7 +145,7 @@ module.exports = {
         await interaction.editReply(
           `${
             interaction.user
-          }형이 룰렛을 돌리는 중이야!\n\n🦖 💩 🇰🇷 💰 🍔 🐮 🐞 ⭐️ 🐵 🍌\n\n⭐️ ⭐️ ⭐️ ⭐️ 나오면 잭팟! \n${
+          }형이 룰렛을 돌리는 중이야!\n\n🦖 💩 🇰🇷 💰 🍔 🐮 🐞 ⭐️ 🐵 🍌\n\n🐞 🐞 🐞 🐞 나오면 잭팟! \n${
             characters[result[1]]
           } ${characters[result[2]]} ${characters[result[3]]} ${
             characters[result[4]]
