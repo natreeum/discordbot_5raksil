@@ -62,7 +62,7 @@ module.exports = {
       });
       return;
     }
-    await interaction.deferReply(`🤖 : 삐빕 삐빕.. 가위바위보 진행중..`);
+    await interaction.deferReply();
 
     //calc bet amount without fee
     const betAmountBeforeFee = interaction.options.getInteger("bet");
@@ -103,7 +103,7 @@ module.exports = {
     if (storageBalance < betAmountBeforeFee * winRate) {
       await interaction.editReply({
         content: `벅크셔해서웨이 금고에 형이 이겼을 때 형한테 줄 돈이 충분하지 않아... 조금만 더 적은 금액으로 베팅해줄 수 있어..?😭\n베팅가능금액 : ${
-          storageBalance / 2
+          storageBalance / winRate
         } 이하`,
         ephemeral: true,
       });
@@ -138,43 +138,43 @@ module.exports = {
     await delay(200);
     await interaction.editReply({
       content: `.\n**안**`,
-      components: [],
+      ephemeral: false,
     });
     await delay(300);
     await interaction.editReply({
       content: `.\n**안 내**`,
-      components: [],
+      ephemeral: false,
     });
     await delay(100);
     await interaction.editReply({
       content: `.\n**안 내면**`,
-      components: [],
+      ephemeral: false,
     });
     await delay(200);
     await interaction.editReply({
       content: `.\n**안 내면 진**`,
-      components: [],
+      ephemeral: false,
     });
     await delay(200);
     await interaction.editReply({
       content: `.\n**안 내면 진다!**`,
-      components: [],
+      ephemeral: false,
     });
 
     await delay(500);
     await interaction.editReply({
       content: `.\n**안 내면 진다!** 가위!`,
-      components: [],
+      ephemeral: false,
     });
     await delay(200);
     await interaction.editReply({
       content: `.\n**안 내면 진다!** 가위! 바위!`,
-      components: [],
+      ephemeral: false,
     });
     await delay(200);
     await interaction.editReply({
       content: `.\n**안 내면 진다!** 가위! 바위! 보!`,
-      components: [],
+      ephemeral: false,
     });
 
     await delay(200);

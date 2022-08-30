@@ -1,9 +1,11 @@
 const { SlashCommandBuilder } = require("discord.js");
 const { Client, GatewayIntentBits } = require("discord.js");
+const BankManager = require(`../bank/BankManager`);
+const bankManager = new BankManager();
 
 let isStarted = false;
 let stackedMoney = 0;
-const price = 10;
+const price = 30;
 const channelId = "1009103539412414494";
 
 const characters = {
@@ -33,18 +35,26 @@ module.exports = {
     .setName("슬롯머신")
     .setDescription(`슬롯 머신을 돌립니다. 비용 : ${price}원`),
   async execute(interaction) {
+    await bankManager.depositBTC(user, String(price));
+
+    //channel lock
     const thisChannel = interaction.client.channels.cache.get(channelId);
     if (interaction.channel != thisChannel) {
       await interaction.reply(`${thisChannel}에서 명령어를 이용해줘😉`);
       return;
     }
+
+    //isStarted Check
     if (isStarted == true) {
       await interaction.reply({
         content: `룰렛이 돌아가고 있어 잠시 후에 도전해봐!`,
         ephemeral: true,
       });
       return;
-    } else {
+    }
+
+    //gameStart
+    else {
       isStarted = true;
       //대충 돈빠지는 코드
       const message = await interaction.reply(
@@ -58,7 +68,7 @@ module.exports = {
       };
 
       for (let i = 1; i < 5; i++) {
-        const countRand = Math.floor(Math.random()*(5)+3);
+        const countRand = Math.floor(Math.random() * 5 + 3);
         for (let j = 0; j < countRand; j++) {
           await interaction.editReply(
             `${
@@ -99,7 +109,7 @@ module.exports = {
         result[1] == result[2] &&
         result[2] == result[3] &&
         result[3] == result[4] &&
-        result[4] == 7
+        result[4] == 6
       ) {
         stackedMoney = 0;
         await interaction.editReply(
