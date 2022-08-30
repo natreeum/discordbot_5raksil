@@ -93,7 +93,7 @@ module.exports = {
     const player2Balance = bankManager.getBalance(seconduser);
 
     //minimum betAmount
-    const MINIMUM_BETAMOUNT = 2;
+    const MINIMUM_BETAMOUNT = 5;
     if (betAmountBeforeFee < MINIMUM_BETAMOUNT) {
       await interaction.editReply({
         content: `최소 베팅 금액은 ${MINIMUM_BETAMOUNT} BTC야!`,
@@ -371,7 +371,8 @@ module.exports = {
         await bankManager.withdrawBTC(winner, betAmount * 2);
         await interaction.editReply(`${sendMessage}`);
       }
+      gamedata.delete(firstuser);
     });
-    gamedata.delete(firstuser);
+    // await
   },
 };
