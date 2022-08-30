@@ -83,7 +83,7 @@ module.exports = {
     if (!channelId.includes(interaction.channel.id)) {
       let message = "가위바위보를 할 수 있는 채널을 알려줄게! : ";
       for (let i of channelId) {
-        message += `i `;
+        message += `<#${i}> `;
       }
       await interaction.editReply({
         content: `${message}`,
