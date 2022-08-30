@@ -15,7 +15,7 @@ const fee = 0;
 const FEE_TO_CALCULATABLE = 1 - fee / 100;
 const winRate = 2.5;
 const drawRate = 0.3;
-const betLimit = 1000;
+const betLimit = 5000;
 
 const weapons = {
   1: { weakTo: 3, strongTo: 2 },
@@ -73,7 +73,7 @@ module.exports = {
     // limit bet amount
     if (betAmountBeforeFee > betLimit) {
       await interaction.editReply({
-        content: `형.. 지금 사업 초기라 ${betLimit} BTC 이하로만 베팅 가능해!`,
+        content: `${betLimit} BTC 이하로만 베팅 가능해!`,
         ephemeral: true,
       });
       return;

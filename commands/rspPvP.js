@@ -7,11 +7,7 @@ const wait = require("node:timers/promises").setTimeout;
 const BankManager = require(`../bank/BankManager`);
 const bankManager = new BankManager();
 
-const channelId = [
-  "962244779171799060",
-  "939866440968863805",
-  "1009096382432411819",
-];
+const channelId = ["962244779171799060", "939866440968863805"];
 const gamedata = new Map();
 
 const weapons = {
