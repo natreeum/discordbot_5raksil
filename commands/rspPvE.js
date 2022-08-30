@@ -86,7 +86,7 @@ module.exports = {
         message += `i `;
       }
       await interaction.editReply({
-        content: `<#${channelId}>에서 명령어를 이용해줘😉`,
+        content: `${message}`,
         ephemeral: true,
       });
       return;
