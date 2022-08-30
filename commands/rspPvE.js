@@ -151,43 +151,43 @@ module.exports = {
     //안내면진다 가위바위보
     await delay(200);
     await interaction.editReply({
-      content: `.\n**안**`,
+      content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안**`,
       ephemeral: false,
     });
     await delay(300);
     await interaction.editReply({
-      content: `.\n**안 내**`,
+      content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내**`,
       ephemeral: false,
     });
     await delay(100);
     await interaction.editReply({
-      content: `.\n**안 내면**`,
+      content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면**`,
       ephemeral: false,
     });
     await delay(200);
     await interaction.editReply({
-      content: `.\n**안 내면 진**`,
+      content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면 진**`,
       ephemeral: false,
     });
     await delay(200);
     await interaction.editReply({
-      content: `.\n**안 내면 진다!**`,
+      content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면 진다!**`,
       ephemeral: false,
     });
 
     await delay(500);
     await interaction.editReply({
-      content: `.\n**안 내면 진다!** 가위!`,
+      content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면 진다!** 가위!`,
       ephemeral: false,
     });
     await delay(200);
     await interaction.editReply({
-      content: `.\n**안 내면 진다!** 가위! 바위!`,
+      content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면 진다!** 가위! 바위!`,
       ephemeral: false,
     });
     await delay(200);
     await interaction.editReply({
-      content: `.\n**안 내면 진다!** 가위! 바위! 보!`,
+      content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면 진다!** 가위! 바위! 보!`,
       ephemeral: false,
     });
 
