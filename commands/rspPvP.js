@@ -47,6 +47,16 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
+    const firstuser = interaction.user;
+    const seconduser = interaction.options.getUser("selectuser");
+    //multiple game check
+    if (gamedata.has(firstuser)) {
+      await interaction.reply({
+        content: `형은 이미 누군가와 겨루고 있는거 같은데? 그거 끝나고 다시해봐~`,
+        ephemeral: true,
+      });
+      return;
+    }
     await interaction.deferReply();
     // channel Lock
     if (!channelId.includes(interaction.channel.id)) {
@@ -60,9 +70,6 @@ module.exports = {
       });
       return;
     }
-
-    const firstuser = interaction.user;
-    const seconduser = interaction.options.getUser("selectuser");
 
     if (firstuser === seconduser) {
       await interaction.editReply(
@@ -368,5 +375,6 @@ module.exports = {
         await interaction.editReply(`${sendMessage}`);
       }
     });
+    gamedata.delete(firstuser);
   },
 };
