@@ -71,7 +71,7 @@ module.exports = {
 
     // channel Lock
     if (!channelId.includes(interaction.channel.id)) {
-      await interaction.reply({
+      await interaction.editReply({
         content: `<#${channelId}>에서 명령어를 이용해줘😉`,
         ephemeral: true,
       });
@@ -81,7 +81,7 @@ module.exports = {
     //minimum betAmount
     const MINIMUM_BETAMOUNT = 5;
     if (betAmountBeforeFee < MINIMUM_BETAMOUNT) {
-      await interaction.reply({
+      await interaction.editReply({
         content: `최소 베팅 금액은 5 BTC야!`,
         ephemeral: true,
       });
@@ -94,14 +94,14 @@ module.exports = {
     const getUserBalance = await bankManager.getBalance(user);
     const userBalance = getUserBalance.point.current;
     if (userBalance < betAmountBeforeFee + staticFee) {
-      await interaction.reply({
+      await interaction.editReply({
         content: `형.. 잔액이 부족해.. \`/show\` 명령어로 잔액확인 한번 해봐!`,
         ephemeral: true,
       });
       return;
     }
     if (storageBalance < betAmountBeforeFee * winRate) {
-      await interaction.reply({
+      await interaction.editReply({
         content: `벅크셔해서웨이 금고에 형이 이겼을 때 형한테 줄 돈이 충분하지 않아... 조금만 더 적은 금액으로 베팅해줄 수 있어..?😭`,
         ephemeral: true,
       });
