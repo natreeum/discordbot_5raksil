@@ -260,6 +260,20 @@ module.exports = {
         return new Promise((resolve) => setTimeout(resolve, ms));
       }
 
+      await delay(500);
+      let message = "처리중";
+      await interaction.editReply({
+        content: message,
+        components: [],
+      });
+      for (let i = 0; i < 3; i++) {
+        message += ".";
+        await interaction.editReply({
+          content: message,
+          components: [],
+        });
+      }
+      await delay(200);
       if (replied.has(firstuser) && replied.has(seconduser)) {
         //안내면진다 가위바위보
         await delay(200);
