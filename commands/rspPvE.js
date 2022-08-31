@@ -4,6 +4,7 @@ const {
   fee,
   FEE_TO_CALCULATABLE,
   winRate,
+  drawRate,
   betLimit,
   MINIMUM_BETAMOUNT,
 } = require("../rspConfig");
