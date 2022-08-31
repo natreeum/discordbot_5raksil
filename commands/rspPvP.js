@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require("discord.js");
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { channel } = require("node:diagnostics_channel");
 const { send } = require("node:process");
+const { CALCULATABLE_WINNERRATE, MINIMUM_BETAMOUNT } = require(`../rspConfig`);
 const wait = require("node:timers/promises").setTimeout;
 
 const BankManager = require(`../bank/BankManager`);
@@ -86,14 +87,16 @@ module.exports = {
     const RAW_betAmount = betAmountBeforeFee * FEE_TO_CALCULATABLE;
     // const betAmount = Math.round(RAW_betAmount * 100) / 100;
     const betAmount = betAmountBeforeFee - fee;
-    const winnerPrize = Math.round(betAmountBeforeFee * 2 * 0.9);
+    const winnerPrize = Math.round(
+      betAmountBeforeFee * 2 * CALCULATABLE_WINNERRATE
+    );
 
     // BTC Balance Check
     const player1Balance = await bankManager.getBalance(firstuser);
     const player2Balance = await bankManager.getBalance(seconduser);
 
     //minimum betAmount
-    const MINIMUM_BETAMOUNT = 10;
+
     if (betAmountBeforeFee < MINIMUM_BETAMOUNT) {
       await interaction.editReply({
         content: `최소 베팅 금액은 ${MINIMUM_BETAMOUNT} BTC야!`,

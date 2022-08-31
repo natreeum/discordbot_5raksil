@@ -1,21 +1,20 @@
 const { SlashCommandBuilder } = require("discord.js");
+const {
+  staticFee,
+  fee,
+  FEE_TO_CALCULATABLE,
+  winRate,
+  betLimit,
+  MINIMUM_BETAMOUNT,
+} = require("../rspConfig");
 const util = require(`util`);
 const BankManager = require(`../bank/BankManager`);
 const bankManager = new BankManager();
 const wait = require("node:timers/promises").setTimeout;
 
-const channelId = ["962244779171799060", "939866440968863805"];
-// const channelId = "1009096382432411819";
+// const channelId = ["962244779171799060", "939866440968863805"];
+const channelId = ["1009096382432411819"];
 const gamedata = new Map();
-
-//fee is percentage point
-const staticFee = 0;
-const fee = 0;
-const FEE_TO_CALCULATABLE = 1 - fee / 100;
-const winRate = 2.5;
-const drawRate = 0.3;
-const betLimit = 5000;
-const MINIMUM_BETAMOUNT = 5;
 
 const weapons = {
   1: { weakTo: 3, strongTo: 2 },

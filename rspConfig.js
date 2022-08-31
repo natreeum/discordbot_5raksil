@@ -13,7 +13,11 @@ const drawRate = 0.3;
 const betLimit = 5000;
 
 // MinimumBetaAmount
-const MINIMUM_BETAMOUNT = 5;
+const MINIMUM_BETAMOUNT = 10;
+
+//pvpWinnerRate
+const winnerRate = 5;
+const CALCULATABLE_WINNERRATE = 1 - winnerRate / 100;
 
 module.exports = {
   staticFee,
@@ -23,4 +27,6 @@ module.exports = {
   drawRate,
   betLimit,
   MINIMUM_BETAMOUNT,
+  CALCULATABLE_WINNERRATE,
+  winnerRate,
 };
