@@ -86,7 +86,7 @@ module.exports = {
     const RAW_betAmount = betAmountBeforeFee * FEE_TO_CALCULATABLE;
     // const betAmount = Math.round(RAW_betAmount * 100) / 100;
     const betAmount = betAmountBeforeFee - fee;
-    const winnerPrize = betAmountBeforeFee * 2 * 0.9;
+    const winnerPrize = Math.round(betAmountBeforeFee * 2 * 0.9);
 
     // BTC Balance Check
     const player1Balance = await bankManager.getBalance(firstuser);
