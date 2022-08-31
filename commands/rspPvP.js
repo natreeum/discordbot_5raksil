@@ -191,27 +191,49 @@ module.exports = {
       time: 5000,
     });
     const replied = new Map();
+    let firstuserMessage = "";
+    let seconduserMessage = "";
     collector.on("collect", async (i) => {
       // await i.update({
       //   content: `[✌  ✊  ✋]\n**__${
       //     betAmountBeforeFee - 1
-      //   } BTC__** 걸고하는 가위바위보\n${firstuser}vs${seconduser}\n가위바위보를 시작하지... 아래 버튼을 5초 안에 눌러!!!`,
+      //   } BTC__** 걸고하는 가위바위보\n${firstuser}vs${seconduser}\n가위바위보를 시작하지... 아래 버튼을 5초 안에 눌러!!!\n`,
       //   components: [row],
       // });
+      const message = `[✌  ✊  ✋]\n**__${
+        betAmountBeforeFee - 1
+      } BTC__** 걸고하는 가위바위보\n${firstuser}vs${seconduser}\n가위바위보를 시작하지... 아래 버튼을 5초 안에 눌러!!!\n`;
+
       if (i.user == firstuser) {
         if (!replied.has(firstuser)) {
-          i.reply(`${i.user}형은 무언가를 내고 기다리고 있어!`);
+          firstuserMessage = `\n${i.user}형은 냈다!`;
+          await i.update({
+            content: message + firstuserMessage + seconduserMessage,
+            components: [row],
+          });
           replied.set(firstuser, true);
         } else {
-          i.reply(`${i.user}형이 기다리는동안 다른걸로 바꿨어!`);
+          firstuserMessage = `\n${i.user}형은 냈다가 바꿨다!`;
+          await i.update({
+            content: message + firstuserMessage + seconduserMessage,
+            components: [row],
+          });
         }
       }
       if (i.user == seconduser) {
         if (!replied.has(seconduser)) {
-          i.reply(`${i.user}형은 무언가를 내고 기다리고 있어!`);
+          seconduserMessage = `\n${i.user}형은 냈다!`;
+          await i.update({
+            content: message + firstuserMessage + seconduserMessage,
+            components: [row],
+          });
           replied.set(seconduser, true);
         } else {
-          i.reply(`${i.user}형이 기다리는동안 다른걸로 바꿨어!`);
+          seconduserMessage = `\n${i.user}형은 냈다가 바꿨다!`;
+          await i.update({
+            content: message + firstuserMessage + seconduserMessage,
+            components: [row],
+          });
         }
       }
 
