@@ -95,7 +95,7 @@ module.exports = {
 
     if (betAmountBeforeFee < MINIMUM_BETAMOUNT) {
       await interaction.editReply({
-        content: `최소 베팅 금액은 5 BTC야!`,
+        content: `최소 베팅 금액은 ${MINIMUM_BETAMOUNT} BTC야!`,
         ephemeral: true,
       });
       return;
