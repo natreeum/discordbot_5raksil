@@ -175,9 +175,7 @@ module.exports = {
 
     //reply to message with buttons
     await interaction.editReply({
-      content: `[✌  ✊  ✋]\n**__${
-        betAmountBeforeFee - 1
-      } BTC__** 걸고하는 가위바위보\n${firstuser}vs${seconduser}\n가위바위보를 시작하지... 아래 버튼을 5초 안에 눌러!!!`,
+      content: `[✌  ✊  ✋]\n**__${betAmountBeforeFee} BTC__** 걸고하는 가위바위보\n${firstuser}vs${seconduser}\n가위바위보를 시작하지... 아래 버튼을 5초 안에 눌러!!!`,
       components: [row],
     });
 
@@ -196,13 +194,11 @@ module.exports = {
     collector.on("collect", async (i) => {
       // await i.update({
       //   content: `[✌  ✊  ✋]\n**__${
-      //     betAmountBeforeFee - 1
+      //     betAmountBeforeFee
       //   } BTC__** 걸고하는 가위바위보\n${firstuser}vs${seconduser}\n가위바위보를 시작하지... 아래 버튼을 5초 안에 눌러!!!\n`,
       //   components: [row],
       // });
-      const message = `[✌  ✊  ✋]\n**__${
-        betAmountBeforeFee - 1
-      } BTC__** 걸고하는 가위바위보\n${firstuser}vs${seconduser}\n가위바위보를 시작하지... 아래 버튼을 5초 안에 눌러!!!\n`;
+      const message = `[✌  ✊  ✋]\n**__${betAmountBeforeFee} BTC__** 걸고하는 가위바위보\n${firstuser}vs${seconduser}\n가위바위보를 시작하지... 아래 버튼을 5초 안에 눌러!!!\n`;
 
       if (i.user == firstuser) {
         if (!replied.has(firstuser)) {
@@ -267,43 +263,37 @@ module.exports = {
       //안내면진다 가위바위보
       await delay(200);
       await interaction.editReply({
-        content: `베팅 금액 : ${betAmountBeforeFee - 1} BTC\n**안**`,
+        content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안**`,
         components: [],
       });
       await delay(300);
       await interaction.editReply({
-        content: `베팅 금액 : ${betAmountBeforeFee - 1} BTC\n**안 내**`,
+        content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내**`,
       });
       await delay(100);
       await interaction.editReply({
-        content: `베팅 금액 : ${betAmountBeforeFee - 1} BTC\n**안 내면**`,
+        content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면**`,
       });
       await delay(200);
       await interaction.editReply({
-        content: `베팅 금액 : ${betAmountBeforeFee - 1} BTC\n**안 내면 진**`,
+        content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면 진**`,
       });
       await delay(200);
       await interaction.editReply({
-        content: `베팅 금액 : ${betAmountBeforeFee - 1} BTC\n**안 내면 진다!**`,
+        content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면 진다!**`,
       });
 
       await delay(500);
       await interaction.editReply({
-        content: `베팅 금액 : ${
-          betAmountBeforeFee - 1
-        } BTC\n**안 내면 진다!** 가위!`,
+        content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면 진다!** 가위!`,
       });
       await delay(200);
       await interaction.editReply({
-        content: `베팅 금액 : ${
-          betAmountBeforeFee - 1
-        } BTC\n**안 내면 진다!** 가위! 바위!`,
+        content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면 진다!** 가위! 바위!`,
       });
       await delay(200);
       await interaction.editReply({
-        content: `베팅 금액 : ${
-          betAmountBeforeFee - 1
-        } BTC\n**안 내면 진다!** 가위! 바위! 보!`,
+        content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면 진다!** 가위! 바위! 보!`,
       });
 
       await delay(200);
