@@ -3,15 +3,21 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { channel } = require("node:diagnostics_channel");
 const { send } = require("node:process");
 const { CALCULATABLE_WINNERRATE, MINIMUM_BETAMOUNT } = require(`../rspConfig`);
+const {
+  isUserDataExist,
+  createUserData,
+  updateUserData,
+  getUserData,
+} = require(`../prisma/rspPvP`);
 const wait = require("node:timers/promises").setTimeout;
 
 const BankManager = require(`../bank/BankManager`);
 const bankManager = new BankManager();
 
 // testserver channel
-// const channelId = ["1009096382432411819"];
+const channelId = ["1009096382432411819"];
 // bugcity channel
-const channelId = ["962244779171799060", "939866440968863805"];
+// const channelId = ["962244779171799060", "939866440968863805"];
 const gamedata = new Map();
 
 const weapons = {
@@ -83,6 +89,27 @@ module.exports = {
       return;
     }
 
+    // 유저 전적 얻기
+    let firstuserdata = await getUserData(firstuser.id);
+    let seconduserdata = await getUserData(seconduser.id);
+
+    if (!firstuserdata) {
+      firstuserdata = await createUserData({ discordId: firstuser.id });
+    }
+    if (!seconduserdata) {
+      seconduserdata = await createUserData({ discordId: seconduser.id });
+    }
+
+    let firstuserSum =
+      firstuserdata.rock + firstuserdata.scissors + firstuserdata.paper;
+    let seconduserSum =
+      seconduserdata.rock + seconduserdata.scissors + seconduserdata.paper;
+    if (firstuserSum == 0) {
+      firstuserSum = 1;
+    }
+    if (seconduserSum == 0) {
+      seconduserSum = 1;
+    }
     const betAmountBeforeFee = interaction.options.getInteger("bet");
     const RAW_betAmount = betAmountBeforeFee * FEE_TO_CALCULATABLE;
     // const betAmount = Math.round(RAW_betAmount * 100) / 100;
@@ -177,8 +204,23 @@ module.exports = {
     await bankManager.depositBTC(seconduser, String(betAmountBeforeFee));
 
     //reply to message with buttons
+    const firstuserScore = {
+      rock: Math.round((firstuserdata.rock / firstuserSum) * 100),
+      scissors: Math.round((firstuserdata.scissors / firstuserSum) * 100),
+      paper: Math.round((firstuserdata.paper / firstuserSum) * 100),
+    };
+    const seconduserScore = {
+      rock: Math.round((seconduserdata.rock / seconduserSum) * 100),
+      scissors: Math.round((seconduserdata.scissors / seconduserSum) * 100),
+      paper: Math.round((seconduserdata.paper / seconduserSum) * 100),
+    };
+    const firstuserScoreMessage = `<@${firstuser.id}>의 전적 ${chat[2]} : ${firstuserScore.scissors}% ${chat[1]} : ${firstuserScore.rock}% ${chat[3]} : ${firstuserScore.paper}% \n`;
+    const seconduserScoreMessage = `<@${seconduser.id}>의 전적 ${chat[2]} : ${seconduserScore.scissors}% ${chat[1]} : ${seconduserScore.rock}% ${chat[3]} : ${seconduserScore.paper}% \n\n`;
+    const basicmessage = `[✌  ✊  ✋]\n**__${betAmountBeforeFee} BTC__** 걸고하는 가위바위보\n${firstuser}vs${seconduser}\n가위바위보를 시작하지... 아래 버튼을 5초 안에 눌러!!!\n`;
+    const message =
+      firstuserScoreMessage + seconduserScoreMessage + basicmessage;
     await interaction.editReply({
-      content: `[✌  ✊  ✋]\n**__${betAmountBeforeFee} BTC__** 걸고하는 가위바위보\n${firstuser}vs${seconduser}\n가위바위보를 시작하지... 아래 버튼을 5초 안에 눌러!!!`,
+      content: `${message}`,
       components: [row],
     });
 
@@ -201,7 +243,6 @@ module.exports = {
       //   } BTC__** 걸고하는 가위바위보\n${firstuser}vs${seconduser}\n가위바위보를 시작하지... 아래 버튼을 5초 안에 눌러!!!\n`,
       //   components: [row],
       // });
-      const message = `[✌  ✊  ✋]\n**__${betAmountBeforeFee} BTC__** 걸고하는 가위바위보\n${firstuser}vs${seconduser}\n가위바위보를 시작하지... 아래 버튼을 5초 안에 눌러!!!\n`;
 
       if (i.user == firstuser) {
         if (!replied.has(firstuser)) {
@@ -360,6 +401,62 @@ module.exports = {
       }
       // 둘 다 뭐라도 냈을 때
       else {
+        //fuser rock
+        if (gamedata.get(firstuser).choice == 1) {
+          await updateUserData({
+            discordId: firstuser.id,
+            rock: firstuserdata.rock + 1,
+            scissors: firstuserdata.scissors,
+            paper: firstuserdata.paper,
+          });
+        }
+        //fuser scissors
+        else if (gamedata.get(firstuser).choice == 2) {
+          await updateUserData({
+            discordId: firstuser.id,
+            rock: firstuserdata.rock,
+            scissors: firstuserdata.scissors + 1,
+            paper: firstuserdata.paper,
+          });
+        }
+        //fuser paper
+        else if (gamedata.get(firstuser).choice == 3) {
+          await updateUserData({
+            discordId: firstuser.id,
+            rock: firstuserdata.rock,
+            scissors: firstuserdata.scissors,
+            paper: firstuserdata.paper + 1,
+          });
+        }
+
+        //suser rock
+        if (gamedata.get(firstuser).seconduser.choice == 1) {
+          await updateUserData({
+            discordId: seconduser.id,
+            rock: seconduserdata.rock + 1,
+            scissors: seconduserdata.scissors,
+            paper: seconduserdata.paper,
+          });
+        }
+        //suser scissors
+        else if (gamedata.get(firstuser).seconduser.choice == 2) {
+          await updateUserData({
+            discordId: seconduser.id,
+            rock: seconduserdata.rock,
+            scissors: seconduserdata.scissors + 1,
+            paper: seconduserdata.paper,
+          });
+        }
+        //suser paper
+        else if (gamedata.get(firstuser).seconduser.choice == 3) {
+          await updateUserData({
+            discordId: seconduser.id,
+            rock: seconduserdata.rock,
+            scissors: seconduserdata.scissors,
+            paper: seconduserdata.paper + 1,
+          });
+        }
+
         if (
           weapons[gamedata.get(firstuser).choice].weakTo ===
           gamedata.get(firstuser).seconduser.choice

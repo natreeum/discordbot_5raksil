@@ -1,0 +1,16 @@
+-- CreateTable
+CREATE TABLE "User" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "discordId" TEXT NOT NULL,
+    "rock" INTEGER NOT NULL DEFAULT 0,
+    "scissors" INTEGER NOT NULL DEFAULT 0,
+    "paper" INTEGER NOT NULL DEFAULT 0
+);
+
+-- CreateTable
+CREATE TABLE "Slotmachine" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "prize" INTEGER NOT NULL DEFAULT 0,
+    "hasWinner" BOOLEAN NOT NULL DEFAULT false,
+    "winner" TEXT NOT NULL
+);
