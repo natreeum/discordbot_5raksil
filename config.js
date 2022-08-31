@@ -7,4 +7,5 @@ module.exports = {
   bugcity: process.env.BUGCITY,
   api: process.env.API_ROOT,
   webhookLogsUrl: process.env.WEBHOOK_LOGS,
+  channels: process.env.CHANNELS.split(","),
 };

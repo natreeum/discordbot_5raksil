@@ -1,5 +1,4 @@
 const { SlashCommandBuilder } = require("discord.js");
-const { rawListeners } = require("node:process");
 const util = require(`util`);
 const BankManager = require(`../bank/BankManager`);
 const bankManager = new BankManager();
@@ -16,6 +15,7 @@ const FEE_TO_CALCULATABLE = 1 - fee / 100;
 const winRate = 2.5;
 const drawRate = 0.3;
 const betLimit = 5000;
+const MINIMUM_BETAMOUNT = 5;
 
 const weapons = {
   1: { weakTo: 3, strongTo: 2 },
@@ -93,7 +93,7 @@ module.exports = {
     }
 
     //minimum betAmount
-    const MINIMUM_BETAMOUNT = 5;
+
     if (betAmountBeforeFee < MINIMUM_BETAMOUNT) {
       await interaction.editReply({
         content: `최소 베팅 금액은 5 BTC야!`,
