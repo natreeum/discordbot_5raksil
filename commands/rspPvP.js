@@ -15,9 +15,9 @@ const BankManager = require(`../bank/BankManager`);
 const bankManager = new BankManager();
 
 // testserver channel
-const channelId = ["1009096382432411819"];
+// const channelId = ["1009096382432411819"];
 // bugcity channel
-// const channelId = ["962244779171799060", "939866440968863805"];
+const channelId = ["962244779171799060", "939866440968863805"];
 const gamedata = new Map();
 
 const weapons = {
