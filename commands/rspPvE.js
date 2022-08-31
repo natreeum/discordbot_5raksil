@@ -4,8 +4,8 @@ const BankManager = require(`../bank/BankManager`);
 const bankManager = new BankManager();
 const wait = require("node:timers/promises").setTimeout;
 
-const channelId = ["962244779171799060", "939866440968863805"];
-// const channelId = "1009096382432411819";
+// const channelId = ["962244779171799060", "939866440968863805"];
+const channelId = "1009096382432411819";
 const gamedata = new Map();
 
 //fee is percentage point
@@ -216,11 +216,11 @@ module.exports = {
       await bankManager.withdrawBTC(user, String(returnBTC));
       const resultBalance = await bankManager.getBalance(user);
 
-      sendMessage += `\n\n**[DRAW]**\n\n[은은한 미소짓는]**로벅트**🤖 : 삐빕.. 비겼습니땅! \n베팅금액의 ${
+      sendMessage += `\n\n**[DRAW]**\n\n\`\`\`ansi\n[1;36m឵[은은한 미소짓는][0m឵로벅트🤖 : 삐빕.. 비겼으니 베팅금액의 ${
         drawRate * 100
       }%인 ${returnBTC} BTC🐞는 집가면서 국밥이라도 챙겨드시라고 돌려줍니땅 | 잔고 : [${
         resultBalance.point.current
-      } BTC]`;
+      } BTC]\`\`\``;
 
       await interaction.editReply(`${sendMessage}`);
     }
@@ -232,10 +232,10 @@ module.exports = {
         const winBTC = Math.round(betAmount * winRate * 100) / 100;
         await bankManager.withdrawBTC(user, String(winBTC));
         const resultBalance = await bankManager.getBalance(user);
-        sendMessage += `\n\n[절망하는]**로벅트**🤖 : 나를 이겼으니 베팅금액의 ${winRate}배인 ${winBTC} BTC🐞를 드립니땅 삐빕 | 잔고 : [${resultBalance.point.current} BTC]`;
+        sendMessage += `\n\n\`\`\`ansi\n[1;31m឵[절망하는][0m឵로벅트🤖 : 베팅금액의 ${winRate}배인 ${winBTC} BTC🐞를 드립니땅 삐빕 | 잔고 : [${resultBalance.point.current} BTC]\`\`\``;
       } else {
         const resultBalance = await bankManager.getBalance(user);
-        sendMessage += `\n\n[웃음짓는]**로벅트**🤖 : 내가 이겼으니 ${betAmountBeforeFee} BTC🐞는 **벅크셔해서웨이**에서 좋은 곳에 쓰겠습니땅! 감사합니땅! 삐빕 | 잔고 : [${resultBalance.point.current} BTC]`;
+        sendMessage += `\n\n\`\`\`ansi\n[1;34m឵[웃음짓는][0m឵로벅트🤖 : ${betAmountBeforeFee} BTC🐞는 벅크셔해서웨이에서 좋은 곳에 쓰겠습니땅! 감사합니땅! 😉 | 잔고 : [${resultBalance.point.current} BTC]\`\`\``;
       }
       await interaction.editReply(`${sendMessage}`);
     }
