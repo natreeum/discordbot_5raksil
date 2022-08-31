@@ -260,7 +260,7 @@ module.exports = {
         return new Promise((resolve) => setTimeout(resolve, ms));
       }
 
-      if (replied.has(firstuser) || replied.has(seconduser)) {
+      if (replied.has(firstuser) && replied.has(seconduser)) {
         //안내면진다 가위바위보
         await delay(200);
         await interaction.editReply({
