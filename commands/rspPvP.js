@@ -260,42 +260,43 @@ module.exports = {
         return new Promise((resolve) => setTimeout(resolve, ms));
       }
 
-      //안내면진다 가위바위보
-      await delay(200);
-      await interaction.editReply({
-        content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안**`,
-        components: [],
-      });
-      await delay(300);
-      await interaction.editReply({
-        content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내**`,
-      });
-      await delay(100);
-      await interaction.editReply({
-        content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면**`,
-      });
-      await delay(200);
-      await interaction.editReply({
-        content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면 진**`,
-      });
-      await delay(200);
-      await interaction.editReply({
-        content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면 진다!**`,
-      });
+      if (replied.has(firstuser) || replied.has(seconduser)) {
+        //안내면진다 가위바위보
+        await delay(200);
+        await interaction.editReply({
+          content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안**`,
+          components: [],
+        });
+        await delay(300);
+        await interaction.editReply({
+          content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내**`,
+        });
+        await delay(100);
+        await interaction.editReply({
+          content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면**`,
+        });
+        await delay(200);
+        await interaction.editReply({
+          content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면 진**`,
+        });
+        await delay(200);
+        await interaction.editReply({
+          content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면 진다!**`,
+        });
 
-      await delay(500);
-      await interaction.editReply({
-        content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면 진다!** 가위!`,
-      });
-      await delay(200);
-      await interaction.editReply({
-        content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면 진다!** 가위! 바위!`,
-      });
-      await delay(200);
-      await interaction.editReply({
-        content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면 진다!** 가위! 바위! 보!`,
-      });
-
+        await delay(500);
+        await interaction.editReply({
+          content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면 진다!** 가위!`,
+        });
+        await delay(200);
+        await interaction.editReply({
+          content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면 진다!** 가위! 바위!`,
+        });
+        await delay(200);
+        await interaction.editReply({
+          content: `베팅 금액 : ${betAmountBeforeFee} BTC\n**안 내면 진다!** 가위! 바위! 보!`,
+        });
+      }
       await delay(200);
 
       let sendMessage = "";
