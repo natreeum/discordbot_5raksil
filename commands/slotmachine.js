@@ -72,7 +72,7 @@ module.exports = {
       await bankManager.depositBTC(interaction.user, String(price));
 
       await interaction.editReply(
-        `상금 : ${stackedMoney} BTC\n\n${interaction.user}형이 룰렛을 돌리는 중이야!\n\n[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🐞 🐞 🐞 나오면 잭팟!`
+        `⭐️ JACKPOT ⭐️ : ${stackedMoney} BTC\n\n${interaction.user}형이 룰렛을 돌리는 중이야!\n\n[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🐞 🐞 🐞 나오면 잭팟!`
       );
       const result = {
         1: 10,
@@ -80,7 +80,7 @@ module.exports = {
         3: 10,
       };
 
-      const message = `상금 : ${stackedMoney} BTC\n\n${
+      const message = `⭐️ JACKPOT ⭐️ : ${stackedMoney} BTC\n\n${
         interaction.user
       }형이 룰렛을 돌리는 중이야!\n\n[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🐞 🐞 🐞 나오면 잭팟! \n\n${
         characters[result[1]]
@@ -93,7 +93,7 @@ module.exports = {
           await delay(500);
           result[i] = await randNum();
           await interaction.editReply(
-            `상금 : ${stackedMoney} BTC\n\n${
+            `⭐️ JACKPOT ⭐️ : ${stackedMoney} BTC\n\n${
               interaction.user
             }형이 룰렛을 돌리는 중이야!\n\n[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🐞 🐞 🐞 나오면 잭팟! \n\n${
               characters[result[1]]
@@ -160,7 +160,7 @@ module.exports = {
             characters[result[1]]
           } ${characters[result[2]]} ${
             characters[result[3]]
-          }\n인생 역전의 기회는 쉽게 오지 않는 법이야!\nJACKPOT : ${stackedMoney} BTC`
+          }\n이제 상금은 ⭐️ ${stackedMoney} BTC ⭐️ 가 됐어! 어차피 10BTC 얼마 안하는데 한번 더해봐ㅋㅋㅋ😁`
         );
         isStarted = false;
       }
