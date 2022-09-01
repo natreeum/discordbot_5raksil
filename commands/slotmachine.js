@@ -6,7 +6,7 @@ const bankManager = new BankManager();
 let isStarted = false;
 let stackedMoney = 0;
 const price = 10;
-const channelId = ["939866440968863805"];
+const channelId = ["962244779171799060"];
 
 const characters = {
   0: "🦖",
@@ -42,7 +42,7 @@ module.exports = {
       for (let i of channelId) {
         message += `<#${i}> `;
       }
-      await interaction.editReply({
+      await interaction.reply({
         content: `${message}`,
         ephemeral: true,
       });
