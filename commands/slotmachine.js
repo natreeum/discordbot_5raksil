@@ -60,7 +60,7 @@ module.exports = {
     }
     await interaction.deferReply();
     //checkbalance
-    const getUserBalance = await bankManager.getBalance(user);
+    const getUserBalance = await bankManager.getBalance(interaction.user);
     const userBalance = getUserBalance.point.current;
     if (userBalance < 10) {
       await interaction.editReply({
