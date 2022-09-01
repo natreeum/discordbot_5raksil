@@ -58,143 +58,152 @@ module.exports = {
       });
       return;
     }
+    await interaction.deferReply();
+    //checkbalance
+    const getUserBalance = await bankManager.getBalance(user);
+    const userBalance = getUserBalance.point.current;
+    if (userBalance < 10) {
+      await interaction.editReply({
+        content: `형.. 잔액이 부족해.. \`/show\` 명령어로 잔액확인 한번 해봐!`,
+        ephemeral: true,
+      });
+      return;
+    }
 
     //gameStart
-    else {
-      isStarted = true;
-      await interaction.deferReply();
-      let gameData = await loadGame();
-      if (!gameData) {
-        gameData = await createGame(basicPrize);
-      }
-      stackedMoney = gameData.prize;
 
-      //price만큼 은행으로 입금
-      await bankManager.depositBTC(interaction.user, String(price));
+    isStarted = true;
+    let gameData = await loadGame();
+    if (!gameData) {
+      gameData = await createGame(basicPrize);
+    }
+    stackedMoney = gameData.prize;
+
+    //price만큼 은행으로 입금
+    await bankManager.depositBTC(interaction.user, String(price));
+
+    await interaction.editReply(
+      `⭐️ JACKPOT ⭐️ : ${stackedMoney} BTC\n\n${interaction.user}형이 룰렛을 돌리는 중이야!\n\n\`\`\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🦖 🦖 🦖 : 100 BTC\n🇰🇷 🇰🇷 🇰🇷 : 100 BTC\n💰 💰 💰 : 100 BTC\n⭐️ ⭐️ ⭐️ : 100 BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\``
+    );
+    const result = {
+      1: 10,
+      2: 10,
+      3: 10,
+    };
+
+    const message = `⭐️ JACKPOT ⭐️ : ${stackedMoney} BTC\n\n${
+      interaction.user
+    }형이 룰렛을 돌리는 중이야!\n\n\`\`\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🦖 🦖 🦖 : 100 BTC\n🇰🇷 🇰🇷 🇰🇷 : 100 BTC\n💰 💰 💰 : 100 BTC\n⭐️ ⭐️ ⭐️ : 100 BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\` \n\n${
+      characters[result[1]]
+    } ${characters[result[2]]} ${characters[result[3]]} `;
+    await interaction.editReply(`${message}`);
+    for (let i = 1; i < 4; i++) {
+      //3~7
+      const countRand = Math.floor(Math.random() * 3 + 5);
+      for (let j = 0; j < countRand; j++) {
+        await delay(500);
+        result[i] = await randNum();
+        await interaction.editReply(
+          `⭐️ JACKPOT ⭐️ : ${stackedMoney} BTC\n\n${
+            interaction.user
+          }형이 룰렛을 돌리는 중이야!\n\n\`\`\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🦖 🦖 🦖 : 100 BTC\n🇰🇷 🇰🇷 🇰🇷 : 100 BTC\n💰 💰 💰 : 100 BTC\n⭐️ ⭐️ ⭐️ : 100 BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\` \n\n${
+            characters[result[1]]
+          } ${characters[result[2]]} ${characters[result[3]]} `
+        );
+      }
+    }
+
+    //jackpot
+    if (
+      result[1] == result[2] &&
+      result[2] == result[3] &&
+      (result[3] == 0 || result[3] == 2 || result[3] == 3 || result[3] == 7)
+    ) {
+      const loseGame = await updateGame({
+        id: gameData.id,
+        prize: gameData.prize - basicPrize / 10,
+        hasWinner: gameData.hasWinner,
+        winner: gameData.winner,
+      });
+      stackedMoney = loseGame.prize;
+      await interaction.editReply(
+        `${
+          interaction.user
+        }형이 룰렛을 돌리는 중이야!\n\n\`\`\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🦖 🦖 🦖 : 100 BTC\n🇰🇷 🇰🇷 🇰🇷 : 100 BTC\n💰 💰 💰 : 100 BTC\n⭐️ ⭐️ ⭐️ : 100 BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\` \n\n${
+          characters[result[1]]
+        } ${characters[result[2]]} ${
+          characters[result[3]]
+        }\n\n**[그윽하게 쳐다보는]** 로벅트 🤖 : 잭팟은 아니지만 ${
+          characters[result[3]]
+        } 3개가 나왔습니땅. 이것도 흔치 않으니 ${
+          basicPrize / 10
+        } BTC 를 드리겠습니땅. 🎉축하드립니땅!🎉\n JACKPOT은 ⭐️ **${stackedMoney} BTC** ⭐️ 가 됐습니땅!`
+      );
+      isStarted = false;
+    } else if (
+      result[1] == result[2] &&
+      result[2] == result[3] &&
+      result[3] == 6
+    ) {
+      const jackpot = await updateGame({
+        id: gameData.id,
+        prize: gameData.prize,
+        hasWinner: true,
+        winner: interaction.user.id,
+      });
+      const prize = jackpot.prize;
+      await bankManager.withdrawBTC(interaction.user, String(prize));
+      const userBalance = await bankManager.getBalance(interaction.user);
+      const message = [
+        `${
+          interaction.user
+        }형이 룰렛을 돌리는 중이야!\n\n\`\`\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🦖 🦖 🦖 : 100 BTC\n🇰🇷 🇰🇷 🇰🇷 : 100 BTC\n💰 💰 💰 : 100 BTC\n⭐️ ⭐️ ⭐️ : 100 BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\` \n\n${
+          characters[result[1]]
+        } ${characters[result[2]]} ${
+          characters[result[3]]
+        }\n\n🎊 🎉 🌟 ⭐️ 🌟 ⭐️ J A C K P O T 🌟 ⭐️ 🌟 ⭐️🎊 🎉`,
+        `${
+          interaction.user
+        }형이 룰렛을 돌리는 중이야!\n\n\`\`\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🦖 🦖 🦖 : 100 BTC\n🇰🇷 🇰🇷 🇰🇷 : 100 BTC\n💰 💰 💰 : 100 BTC\n⭐️ ⭐️ ⭐️ : 100 BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\` \n\n${
+          characters[result[1]]
+        } ${characters[result[2]]} ${
+          characters[result[3]]
+        }\n\n 🎊 🎉⭐️ 🌟 ⭐️ 🌟 J A C K P O T ⭐️ 🌟 ⭐️ 🌟 🎊 🎉`,
+      ];
+      for (let i = 0; i < 10; i++) {
+        await interaction.editReply(`${message[i % 2]}`);
+      }
 
       await interaction.editReply(
-        `⭐️ JACKPOT ⭐️ : ${stackedMoney} BTC\n\n${interaction.user}형이 룰렛을 돌리는 중이야!\n\n[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🦖 🦖 🦖 : 100 BTC\n🇰🇷 🇰🇷 🇰🇷 : 100 BTC\n💰 💰 💰 : 100 BTC\n⭐️ ⭐️ ⭐️ : 100 BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️`
+        `${
+          interaction.user
+        }형이 룰렛을 돌리는 중이야!\n\n\`\`\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🦖 🦖 🦖 : 100 BTC\n🇰🇷 🇰🇷 🇰🇷 : 100 BTC\n💰 💰 💰 : 100 BTC\n⭐️ ⭐️ ⭐️ : 100 BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\` \n\n${
+          characters[result[1]]
+        } ${characters[result[2]]} ${
+          characters[result[3]]
+        } \n\n🎊 🎉 🌟 ⭐️ 🌟 ⭐️ J A C K P O T 🌟 ⭐️ 🌟 ⭐️ 🎊 🎉\n\n**[축하하는]**로벅트🤖 : 잭팟을 축하합니땅! 형 주머니에 상금 ${prize} BTC 넣어놨어! | ${
+          interaction.user
+        }💰 : ${userBalance.point.current} BTC🐞`
       );
-      const result = {
-        1: 10,
-        2: 10,
-        3: 10,
-      };
-
-      const message = `⭐️ JACKPOT ⭐️ : ${stackedMoney} BTC\n\n${
-        interaction.user
-      }형이 룰렛을 돌리는 중이야!\n\n[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🦖 🦖 🦖 : 100 BTC\n🇰🇷 🇰🇷 🇰🇷 : 100 BTC\n💰 💰 💰 : 100 BTC\n⭐️ ⭐️ ⭐️ : 100 BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️ \n\n${
-        characters[result[1]]
-      } ${characters[result[2]]} ${characters[result[3]]} `;
-      await interaction.editReply(`${message}`);
-      for (let i = 1; i < 4; i++) {
-        //3~7
-        const countRand = Math.floor(Math.random() * 3 + 5);
-        for (let j = 0; j < countRand; j++) {
-          await delay(500);
-          result[i] = await randNum();
-          await interaction.editReply(
-            `⭐️ JACKPOT ⭐️ : ${stackedMoney} BTC\n\n${
-              interaction.user
-            }형이 룰렛을 돌리는 중이야!\n\n[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🦖 🦖 🦖 : 100 BTC\n🇰🇷 🇰🇷 🇰🇷 : 100 BTC\n💰 💰 💰 : 100 BTC\n⭐️ ⭐️ ⭐️ : 100 BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️ \n\n${
-              characters[result[1]]
-            } ${characters[result[2]]} ${characters[result[3]]} `
-          );
-        }
-      }
-
-      //jackpot
-      if (
-        result[1] == result[2] &&
-        result[2] == result[3] &&
-        (result[3] == 0 || result[3] == 2 || result[3] == 3 || result[3] == 7)
-      ) {
-        const loseGame = await updateGame({
-          id: gameData.id,
-          prize: gameData.prize - basicPrize / 10,
-          hasWinner: gameData.hasWinner,
-          winner: gameData.winner,
-        });
-        stackedMoney = loseGame.prize;
-        await interaction.editReply(
-          `${
-            interaction.user
-          }형이 룰렛을 돌리는 중이야!\n\n[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🦖 🦖 🦖 : 100 BTC\n🇰🇷 🇰🇷 🇰🇷 : 100 BTC\n💰 💰 💰 : 100 BTC\n⭐️ ⭐️ ⭐️ : 100 BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️ \n\n${
-            characters[result[1]]
-          } ${characters[result[2]]} ${
-            characters[result[3]]
-          }\n\n**[그윽하게 쳐다보는]** 로벅트 🤖 : 잭팟은 아니지만 ${
-            characters[result[3]]
-          } 3개가 나왔습니땅. 이것도 흔치 않으니 ${
-            basicPrize / 10
-          } BTC 를 드리겠습니땅. 🎉축하드립니땅!🎉\n JACKPOT은 ⭐️ **${stackedMoney} BTC** ⭐️ 가 됐습니땅!`
-        );
-        isStarted = false;
-      } else if (
-        result[1] == result[2] &&
-        result[2] == result[3] &&
-        result[3] == 6
-      ) {
-        const jackpot = await updateGame({
-          id: gameData.id,
-          prize: gameData.prize,
-          hasWinner: true,
-          winner: interaction.user.id,
-        });
-        const prize = jackpot.prize;
-        await bankManager.withdrawBTC(interaction.user, String(prize));
-        const userBalance = await bankManager.getBalance(interaction.user);
-        const message = [
-          `${
-            interaction.user
-          }형이 룰렛을 돌리는 중이야!\n\n[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🦖 🦖 🦖 : 100 BTC\n🇰🇷 🇰🇷 🇰🇷 : 100 BTC\n💰 💰 💰 : 100 BTC\n⭐️ ⭐️ ⭐️ : 100 BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️ \n\n${
-            characters[result[1]]
-          } ${characters[result[2]]} ${
-            characters[result[3]]
-          }\n\n🎊 🎉 🌟 ⭐️ 🌟 ⭐️ J A C K P O T 🌟 ⭐️ 🌟 ⭐️🎊 🎉`,
-          `${
-            interaction.user
-          }형이 룰렛을 돌리는 중이야!\n\n[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🦖 🦖 🦖 : 100 BTC\n🇰🇷 🇰🇷 🇰🇷 : 100 BTC\n💰 💰 💰 : 100 BTC\n⭐️ ⭐️ ⭐️ : 100 BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️ \n\n${
-            characters[result[1]]
-          } ${characters[result[2]]} ${
-            characters[result[3]]
-          }\n\n 🎊 🎉⭐️ 🌟 ⭐️ 🌟 J A C K P O T ⭐️ 🌟 ⭐️ 🌟 🎊 🎉`,
-        ];
-        for (let i = 0; i < 10; i++) {
-          await interaction.editReply(`${message[i % 2]}`);
-        }
-
-        await interaction.editReply(
-          `${
-            interaction.user
-          }형이 룰렛을 돌리는 중이야!\n\n[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🦖 🦖 🦖 : 100 BTC\n🇰🇷 🇰🇷 🇰🇷 : 100 BTC\n💰 💰 💰 : 100 BTC\n⭐️ ⭐️ ⭐️ : 100 BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️ \n\n${
-            characters[result[1]]
-          } ${characters[result[2]]} ${
-            characters[result[3]]
-          } \n\n🎊 🎉 🌟 ⭐️ 🌟 ⭐️ J A C K P O T 🌟 ⭐️ 🌟 ⭐️ 🎊 🎉\n\n**[축하하는]**로벅트🤖 : 잭팟을 축하합니땅! 형 주머니에 상금 ${prize} BTC 넣어놨어! | ${
-            interaction.user
-          }💰 : ${userBalance.point.current} BTC🐞`
-        );
-        isStarted = false;
-      } else {
-        const loseGame = await updateGame({
-          id: gameData.id,
-          prize: gameData.prize + price / 2,
-          hasWinner: gameData.hasWinner,
-          winner: gameData.winner,
-        });
-        stackedMoney = loseGame.prize;
-        await interaction.editReply(
-          `${
-            interaction.user
-          }형이 룰렛을 돌리는 중이야!\n\n[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🦖 🦖 🦖 : 100 BTC\n🇰🇷 🇰🇷 🇰🇷 : 100 BTC\n💰 💰 💰 : 100 BTC\n⭐️ ⭐️ ⭐️ : 100 BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️ \n\n${
-            characters[result[1]]
-          } ${characters[result[2]]} ${
-            characters[result[3]]
-          }\n\n**[${price} BTC 를 주머니에 넣는]** 로벅트 🤖 : 이제 상금은 ⭐️ **${stackedMoney} BTC** ⭐️ 가 됐습니땅!\n 어차피 10BTC 얼마 안하는데 한번 더 하는건 어떻습니깡?😁`
-        );
-        isStarted = false;
-      }
+      isStarted = false;
+    } else {
+      const loseGame = await updateGame({
+        id: gameData.id,
+        prize: gameData.prize + price / 2,
+        hasWinner: gameData.hasWinner,
+        winner: gameData.winner,
+      });
+      stackedMoney = loseGame.prize;
+      await interaction.editReply(
+        `${
+          interaction.user
+        }형이 룰렛을 돌리는 중이야!\n\n\`\`\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🦖 🦖 🦖 : 100 BTC\n🇰🇷 🇰🇷 🇰🇷 : 100 BTC\n💰 💰 💰 : 100 BTC\n⭐️ ⭐️ ⭐️ : 100 BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\` \n\n${
+          characters[result[1]]
+        } ${characters[result[2]]} ${
+          characters[result[3]]
+        }\n\n**[${price} BTC 를 주머니에 넣는]** 로벅트 🤖 : 이제 상금은 ⭐️ **${stackedMoney} BTC** ⭐️ 가 됐습니땅!\n 어차피 10BTC 얼마 안하는데 한번 더 하는건 어떻습니깡?😁`
+      );
+      isStarted = false;
     }
   },
 };
