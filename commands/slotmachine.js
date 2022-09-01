@@ -92,7 +92,13 @@ module.exports = {
         for (let j = 0; j < countRand; j++) {
           await delay(500);
           result[i] = await randNum();
-          await interaction.editReply(`${message}`);
+          await interaction.editReply(
+            `상금 : ${stackedMoney} BTC\n\n${
+              interaction.user
+            }형이 룰렛을 돌리는 중이야!\n\n[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🐞 🐞 🐞 나오면 잭팟! \n\n${
+              characters[result[1]]
+            } ${characters[result[2]]} ${characters[result[3]]} `
+          );
         }
       }
 
