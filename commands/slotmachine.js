@@ -6,7 +6,7 @@ const bankManager = new BankManager();
 let isStarted = false;
 let stackedMoney = 0;
 const price = 10;
-const channelId = "1009103539412414494";
+const channelId = ["939866440968863805"];
 
 const characters = {
   0: "🦖",
@@ -36,10 +36,16 @@ module.exports = {
       `슬롯 머신을 돌립니다. 당첨 확률은 "1/1000" 비용 : ${price} BTC`
     ),
   async execute(interaction) {
-    //channel lock
-    const thisChannel = interaction.client.channels.cache.get(channelId);
-    if (interaction.channel != thisChannel) {
-      await interaction.reply(`${thisChannel}에서 명령어를 이용해줘😉`);
+    // channel Lock
+    if (!channelId.includes(interaction.channel.id)) {
+      let message = "가위바위보를 할 수 있는 채널을 알려줄게! : ";
+      for (let i of channelId) {
+        message += `<#${i}> `;
+      }
+      await interaction.editReply({
+        content: `${message}`,
+        ephemeral: true,
+      });
       return;
     }
 
