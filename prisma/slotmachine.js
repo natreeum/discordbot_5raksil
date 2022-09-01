@@ -16,11 +16,11 @@ async function loadGame() {
 }
 
 //create game
-async function createGame() {
+async function createGame(prize) {
   try {
     const slotData = await prisma.slotmachine.create({
       data: {
-        prize: 1000,
+        prize,
       },
     });
     return slotData;

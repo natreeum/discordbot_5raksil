@@ -7,6 +7,7 @@ let isStarted = false;
 let stackedMoney = 0;
 const price = 10;
 const channelId = ["962244779171799060"];
+const basicPrize = 1000;
 
 const characters = {
   0: "🦖",
@@ -64,7 +65,7 @@ module.exports = {
       await interaction.deferReply();
       let gameData = await loadGame();
       if (!gameData) {
-        gameData = await createGame();
+        gameData = await createGame(basicPrize);
       }
       stackedMoney = gameData.prize;
 
@@ -103,7 +104,37 @@ module.exports = {
       }
 
       //jackpot
-      if (result[1] == result[2] && result[2] == result[3] && result[3] == 6) {
+      if (
+        result[1] == result[2] &&
+        result[2] == result[3] &&
+        (result[3] == 0 || result[3] == 2 || result[3] == 3 || result[3] == 7)
+      ) {
+        const loseGame = await updateGame({
+          id: gameData.id,
+          prize: gameData.prize - basicPrize / 10,
+          hasWinner: gameData.hasWinner,
+          winner: gameData.winner,
+        });
+        stackedMoney = loseGame.prize;
+        await interaction.editReply(
+          `${
+            interaction.user
+          }형이 룰렛을 돌리는 중이야!\n\n[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🐞 🐞 🐞 나오면 잭팟! \n\n${
+            characters[result[1]]
+          } ${characters[result[2]]} ${
+            characters[result[3]]
+          }\n\n**[그윽하게 쳐다보는]** 로벅트 🤖 : 잭팟은 아니지만 ${
+            characters[result[3]]
+          } 3개가 나왔습니땅. 이것도 흔치 않으니 ${
+            basicPrize / 10
+          } BTC 를 드리겠습니땅. 🎉축하드립니땅!🎉\n JACKPOT은 ⭐️ **${stackedMoney} BTC** ⭐️ 가 됐습니땅!`
+        );
+        isStarted = false;
+      } else if (
+        result[1] == result[2] &&
+        result[2] == result[3] &&
+        result[3] == 6
+      ) {
         const jackpot = await updateGame({
           id: gameData.id,
           prize: gameData.prize,
