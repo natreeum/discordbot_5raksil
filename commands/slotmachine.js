@@ -66,6 +66,7 @@ module.exports = {
       if (!gameData) {
         gameData = await createGame();
       }
+      stackedMoney = gamedata.prize;
 
       //price만큼 은행으로 입금
       await bankManager.depositBTC(interaction.user, String(price));
@@ -79,36 +80,20 @@ module.exports = {
         3: 10,
       };
 
-      await interaction.editReply(
-        `${
-          interaction.user
-        }형이 룰렛을 돌리는 중이야!\n\n[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🐞 🐞 🐞 나오면 잭팟! \n\n${
-          characters[result[1]]
-        } ${characters[result[2]]} ${characters[result[3]]} `
-      );
+      const message = `${
+        interaction.user
+      }형이 룰렛을 돌리는 중이야!\n\n[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🐞 🐞 🐞 나오면 잭팟! \n\n${
+        characters[result[1]]
+      } ${characters[result[2]]} ${characters[result[3]]} `;
+      await interaction.editReply(`${message}`);
       for (let i = 1; i < 4; i++) {
         //3~7
         const countRand = Math.floor(Math.random() * 3 + 5);
         for (let j = 0; j < countRand; j++) {
-          await delay(100);
+          await delay(500);
           result[i] = await randNum();
-          await interaction.editReply(
-            `${
-              interaction.user
-            }형이 룰렛을 돌리는 중이야!\n\n[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🐞 🐞 🐞 나오면 잭팟! \n\n${
-              characters[result[1]]
-            } ${characters[result[2]]} ${characters[result[3]]} `
-          );
+          await interaction.editReply(`${message}`);
         }
-        // await delay(50);
-        // result[i] = await randNum();
-        // await interaction.editReply(
-        //   `${
-        //     interaction.user
-        //   }형이 룰렛을 돌리는 중이야!\n\n[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🐞 🐞 🐞 나오면 잭팟! \n\n${
-        //     characters[result[1]]
-        //   } ${characters[result[2]]} ${characters[result[3]]} `
-        // );
       }
 
       //jackpot
