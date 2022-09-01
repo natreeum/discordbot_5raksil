@@ -84,7 +84,7 @@ module.exports = {
     await bankManager.depositBTC(interaction.user, String(price));
 
     await interaction.editReply(
-      `⭐️ JACKPOT ⭐️ : ${stackedMoney} BTC\n\n${interaction.user}형이 룰렛을 돌리는 중이야!\n\n\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\`\n\`\`\`🦖 🦖 🦖 : ${secondPrize} BTC\n🇰🇷 🇰🇷 🇰🇷 : ${secondPrize} BTC\n💰 💰 💰 : ${secondPrize} BTC\n⭐️ ⭐️ ⭐️ : ${secondPrize} BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\``
+      `${interaction.user}형이 룰렛을 돌리는 중이야!\n\n\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\`\n\`\`\`⭐️ JACKPOT ⭐️ : ${stackedMoney} BTC\n\n🦖 🦖 🦖 : ${secondPrize} BTC\n🇰🇷 🇰🇷 🇰🇷 : ${secondPrize} BTC\n💰 💰 💰 : ${secondPrize} BTC\n⭐️ ⭐️ ⭐️ : ${secondPrize} BTC\n\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\``
     );
     const result = {
       1: 10,
@@ -92,9 +92,9 @@ module.exports = {
       3: 10,
     };
 
-    const message = `⭐️ JACKPOT ⭐️ : ${stackedMoney} BTC\n\n${
+    const message = `${
       interaction.user
-    }형이 룰렛을 돌리는 중이야!\n\n\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\`\n\`\`\`🦖 🦖 🦖 : ${secondPrize} BTC\n🇰🇷 🇰🇷 🇰🇷 : ${secondPrize} BTC\n💰 💰 💰 : ${secondPrize} BTC\n⭐️ ⭐️ ⭐️ : ${secondPrize} BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\` \n\n${
+    }형이 룰렛을 돌리는 중이야!\n\n\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\`\n\`\`\`⭐️ JACKPOT ⭐️ : ${stackedMoney} BTC\n\n🦖 🦖 🦖 : ${secondPrize} BTC\n🇰🇷 🇰🇷 🇰🇷 : ${secondPrize} BTC\n💰 💰 💰 : ${secondPrize} BTC\n⭐️ ⭐️ ⭐️ : ${secondPrize} BTC\n\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\` \n\n${
       characters[result[1]]
     } ${characters[result[2]]} ${characters[result[3]]} `;
     await interaction.editReply(`${message}`);
@@ -105,9 +105,9 @@ module.exports = {
         await delay(500);
         result[i] = await randNum();
         await interaction.editReply(
-          `⭐️ JACKPOT ⭐️ : ${stackedMoney} BTC\n\n${
+          `${
             interaction.user
-          }형이 룰렛을 돌리는 중이야!\n\n\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\`\n\`\`\`🦖 🦖 🦖 : ${secondPrize} BTC\n🇰🇷 🇰🇷 🇰🇷 : ${secondPrize} BTC\n💰 💰 💰 : ${secondPrize} BTC\n⭐️ ⭐️ ⭐️ : ${secondPrize} BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\` \n\n${
+          }형이 룰렛을 돌리는 중이야!\n\n\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\`\n\`\`\`⭐️ JACKPOT ⭐️ : ${stackedMoney} BTC\n\n🦖 🦖 🦖 : ${secondPrize} BTC\n🇰🇷 🇰🇷 🇰🇷 : ${secondPrize} BTC\n💰 💰 💰 : ${secondPrize} BTC\n⭐️ ⭐️ ⭐️ : ${secondPrize} BTC\n\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\` \n\n${
             characters[result[1]]
           } ${characters[result[2]]} ${characters[result[3]]} `
         );
@@ -132,7 +132,7 @@ module.exports = {
       await interaction.editReply(
         `${
           interaction.user
-        }형이 룰렛을 돌리는 중이야!\n\n\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\`\n\`\`\`🦖 🦖 🦖 : ${secondPrize} BTC\n🇰🇷 🇰🇷 🇰🇷 : ${secondPrize} BTC\n💰 💰 💰 : ${secondPrize} BTC\n⭐️ ⭐️ ⭐️ : ${secondPrize} BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\` \n\n${
+        }형이 룰렛을 돌리는 중이야!\n\n\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\`\n\`\`\`⭐️ JACKPOT ⭐️ : ${stackedMoney} BTC\n\n🦖 🦖 🦖 : ${secondPrize} BTC\n🇰🇷 🇰🇷 🇰🇷 : ${secondPrize} BTC\n💰 💰 💰 : ${secondPrize} BTC\n⭐️ ⭐️ ⭐️ : ${secondPrize} BTC\n\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\` \n\n${
           characters[result[1]]
         } ${characters[result[2]]} ${
           characters[result[3]]
@@ -160,14 +160,14 @@ module.exports = {
       const message = [
         `${
           interaction.user
-        }형이 룰렛을 돌리는 중이야!\n\n\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\`\n\`\`\`🦖 🦖 🦖 : ${secondPrize} BTC\n🇰🇷 🇰🇷 🇰🇷 : ${secondPrize} BTC\n💰 💰 💰 : ${secondPrize} BTC\n⭐️ ⭐️ ⭐️ : ${secondPrize} BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\` \n\n${
+        }형이 룰렛을 돌리는 중이야!\n\n\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\`\n\`\`\`⭐️ JACKPOT ⭐️ : ${stackedMoney} BTC\n\n🦖 🦖 🦖 : ${secondPrize} BTC\n🇰🇷 🇰🇷 🇰🇷 : ${secondPrize} BTC\n💰 💰 💰 : ${secondPrize} BTC\n⭐️ ⭐️ ⭐️ : ${secondPrize} BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\` \n\n${
           characters[result[1]]
         } ${characters[result[2]]} ${
           characters[result[3]]
         }\n\n🎊 🎉 🌟 ⭐️ 🌟 ⭐️ J A C K P O T 🌟 ⭐️ 🌟 ⭐️🎊 🎉`,
         `${
           interaction.user
-        }형이 룰렛을 돌리는 중이야!\n\n\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\`\n\`\`\`🦖 🦖 🦖 : ${secondPrize} BTC\n🇰🇷 🇰🇷 🇰🇷 : ${secondPrize} BTC\n💰 💰 💰 : ${secondPrize} BTC\n⭐️ ⭐️ ⭐️ : ${secondPrize} BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\` \n\n${
+        }형이 룰렛을 돌리는 중이야!\n\n\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\`\n\`\`\`⭐️ JACKPOT ⭐️ : ${stackedMoney} BTC\n\n🦖 🦖 🦖 : ${secondPrize} BTC\n🇰🇷 🇰🇷 🇰🇷 : ${secondPrize} BTC\n💰 💰 💰 : ${secondPrize} BTC\n⭐️ ⭐️ ⭐️ : ${secondPrize} BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\` \n\n${
           characters[result[1]]
         } ${characters[result[2]]} ${
           characters[result[3]]
@@ -176,11 +176,10 @@ module.exports = {
       for (let i = 0; i < 10; i++) {
         await interaction.editReply(`${message[i % 2]}`);
       }
-
       await interaction.editReply(
         `${
           interaction.user
-        }형이 룰렛을 돌리는 중이야!\n\n\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\`\n\`\`\`🦖 🦖 🦖 : ${secondPrize} BTC\n🇰🇷 🇰🇷 🇰🇷 : ${secondPrize} BTC\n💰 💰 💰 : ${secondPrize} BTC\n⭐️ ⭐️ ⭐️ : ${secondPrize} BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\` \n\n${
+        }형이 룰렛을 돌리는 중이야!\n\n\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\`\n\`\`\`⭐️ JACKPOT ⭐️ : ${stackedMoney} BTC\n\n🦖 🦖 🦖 : ${secondPrize} BTC\n🇰🇷 🇰🇷 🇰🇷 : ${secondPrize} BTC\n💰 💰 💰 : ${secondPrize} BTC\n⭐️ ⭐️ ⭐️ : ${secondPrize} BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\` \n\n${
           characters[result[1]]
         } ${characters[result[2]]} ${
           characters[result[3]]
@@ -200,7 +199,7 @@ module.exports = {
       await interaction.editReply(
         `${
           interaction.user
-        }형이 룰렛을 돌리는 중이야!\n\n\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\`\n\`\`\`🦖 🦖 🦖 : ${secondPrize} BTC\n🇰🇷 🇰🇷 🇰🇷 : ${secondPrize} BTC\n💰 💰 💰 : ${secondPrize} BTC\n⭐️ ⭐️ ⭐️ : ${secondPrize} BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\` \n\n${
+        }형이 룰렛을 돌리는 중이야!\n\n\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\`\n\`\`\`⭐️ JACKPOT ⭐️ : ${stackedMoney} BTC\n\n🦖 🦖 🦖 : ${secondPrize} BTC\n🇰🇷 🇰🇷 🇰🇷 : ${secondPrize} BTC\n💰 💰 💰 : ${secondPrize} BTC\n⭐️ ⭐️ ⭐️ : ${secondPrize} BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\` \n\n${
           characters[result[1]]
         } ${characters[result[2]]} ${
           characters[result[3]]
