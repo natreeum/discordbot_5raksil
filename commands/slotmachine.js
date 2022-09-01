@@ -84,7 +84,7 @@ module.exports = {
     await bankManager.depositBTC(interaction.user, String(price));
 
     await interaction.editReply(
-      `⭐️ JACKPOT ⭐️ : ${stackedMoney} BTC\n\n${interaction.user}형이 룰렛을 돌리는 중이야!\n\n\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\`\n\`\`\`🦖 🦖 🦖 : 100 BTC\n🇰🇷 🇰🇷 🇰🇷 : 100 BTC\n💰 💰 💰 : 100 BTC\n⭐️ ⭐️ ⭐️ : 100 BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\``
+      `⭐️ JACKPOT ⭐️ : ${stackedMoney} BTC\n\n${interaction.user}형이 룰렛을 돌리는 중이야!\n\n\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\`\n\`\`\`🦖 🦖 🦖 : ${secondPrize} BTC\n🇰🇷 🇰🇷 🇰🇷 : ${secondPrize} BTC\n💰 💰 💰 : ${secondPrize} BTC\n⭐️ ⭐️ ⭐️ : ${secondPrize} BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\``
     );
     const result = {
       1: 10,
@@ -94,7 +94,7 @@ module.exports = {
 
     const message = `⭐️ JACKPOT ⭐️ : ${stackedMoney} BTC\n\n${
       interaction.user
-    }형이 룰렛을 돌리는 중이야!\n\n\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\`\n\`\`\`🦖 🦖 🦖 : 100 BTC\n🇰🇷 🇰🇷 🇰🇷 : 100 BTC\n💰 💰 💰 : 100 BTC\n⭐️ ⭐️ ⭐️ : 100 BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\` \n\n${
+    }형이 룰렛을 돌리는 중이야!\n\n\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\`\n\`\`\`🦖 🦖 🦖 : ${secondPrize} BTC\n🇰🇷 🇰🇷 🇰🇷 : ${secondPrize} BTC\n💰 💰 💰 : ${secondPrize} BTC\n⭐️ ⭐️ ⭐️ : ${secondPrize} BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\` \n\n${
       characters[result[1]]
     } ${characters[result[2]]} ${characters[result[3]]} `;
     await interaction.editReply(`${message}`);
@@ -107,7 +107,7 @@ module.exports = {
         await interaction.editReply(
           `⭐️ JACKPOT ⭐️ : ${stackedMoney} BTC\n\n${
             interaction.user
-          }형이 룰렛을 돌리는 중이야!\n\n\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\`\n\`\`\`🦖 🦖 🦖 : 100 BTC\n🇰🇷 🇰🇷 🇰🇷 : 100 BTC\n💰 💰 💰 : 100 BTC\n⭐️ ⭐️ ⭐️ : 100 BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\` \n\n${
+          }형이 룰렛을 돌리는 중이야!\n\n\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\`\n\`\`\`🦖 🦖 🦖 : ${secondPrize} BTC\n🇰🇷 🇰🇷 🇰🇷 : ${secondPrize} BTC\n💰 💰 💰 : ${secondPrize} BTC\n⭐️ ⭐️ ⭐️ : ${secondPrize} BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\` \n\n${
             characters[result[1]]
           } ${characters[result[2]]} ${characters[result[3]]} `
         );
@@ -123,7 +123,7 @@ module.exports = {
       await bankManager.withdrawBTC(interaction.user, secondPrize);
       const loseGame = await updateGame({
         id: gameData.id,
-        prize: gameData.prize - secondPrize,
+        prize: gameData.prize,
         hasWinner: gameData.hasWinner,
         winner: gameData.winner,
       });
@@ -132,7 +132,7 @@ module.exports = {
       await interaction.editReply(
         `${
           interaction.user
-        }형이 룰렛을 돌리는 중이야!\n\n\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\`\n\`\`\`🦖 🦖 🦖 : 100 BTC\n🇰🇷 🇰🇷 🇰🇷 : 100 BTC\n💰 💰 💰 : 100 BTC\n⭐️ ⭐️ ⭐️ : 100 BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\` \n\n${
+        }형이 룰렛을 돌리는 중이야!\n\n\`[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\`\n\`\`\`🦖 🦖 🦖 : ${secondPrize} BTC\n🇰🇷 🇰🇷 🇰🇷 : ${secondPrize} BTC\n💰 💰 💰 : ${secondPrize} BTC\n⭐️ ⭐️ ⭐️ : ${secondPrize} BTC\n🐞 🐞 🐞 : ⭐️ JACKPOT ⭐️\`\`\` \n\n${
           characters[result[1]]
         } ${characters[result[2]]} ${
           characters[result[3]]
