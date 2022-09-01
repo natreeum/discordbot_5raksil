@@ -20,7 +20,7 @@ model User {
 
 model Slotmachine {
   id        Int     @id @default(autoincrement())
-  prize     Int     @default(0)
+  prize     Int     @default(1000)
   hasWinner Boolean @default(false)
-  winner    String
+  winner    String  @default("waiting")
 }
