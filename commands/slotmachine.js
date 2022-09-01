@@ -119,13 +119,16 @@ module.exports = {
       result[2] == result[3] &&
       (result[3] == 0 || result[3] == 2 || result[3] == 3 || result[3] == 7)
     ) {
+      secondPrize = (basicPrize / 10) * 3;
+      await bankManager.withdrawBTC(interaction.user, secondPrize);
       const loseGame = await updateGame({
         id: gameData.id,
-        prize: gameData.prize - basicPrize / 10,
+        prize: gameData.prize - secondPrize,
         hasWinner: gameData.hasWinner,
         winner: gameData.winner,
       });
       stackedMoney = loseGame.prize;
+
       await interaction.editReply(
         `${
           interaction.user
@@ -135,9 +138,7 @@ module.exports = {
           characters[result[3]]
         }\n\n**[그윽하게 쳐다보는]** 로벅트 🤖 : 잭팟은 아니지만 ${
           characters[result[3]]
-        } 3개가 나왔습니땅. 이것도 흔치 않으니 ${
-          basicPrize / 10
-        } BTC 를 드리겠습니땅. 🎉축하드립니땅!🎉\n JACKPOT은 ⭐️ **${stackedMoney} BTC** ⭐️ 가 됐습니땅!`
+        } 3개가 나왔습니땅. 이것도 흔치 않으니 ${secondPrize} BTC 를 드리겠습니땅. 🎉축하드립니땅!🎉\n JACKPOT은 ⭐️ **${stackedMoney} BTC** ⭐️ 가 됐습니땅!`
       );
       isStarted = false;
     } else if (
