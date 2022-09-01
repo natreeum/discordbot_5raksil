@@ -66,13 +66,13 @@ module.exports = {
       if (!gameData) {
         gameData = await createGame();
       }
-      stackedMoney = gamedata.prize;
+      stackedMoney = gameData.prize;
 
       //price만큼 은행으로 입금
       await bankManager.depositBTC(interaction.user, String(price));
 
       await interaction.editReply(
-        `${interaction.user}형이 룰렛을 돌리는 중이야!\n\n[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🐞 🐞 🐞 나오면 잭팟!`
+        `상금 : ${stackedMoney} BTC\n\n${interaction.user}형이 룰렛을 돌리는 중이야!\n\n[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🐞 🐞 🐞 나오면 잭팟!`
       );
       const result = {
         1: 10,
@@ -80,7 +80,7 @@ module.exports = {
         3: 10,
       };
 
-      const message = `${
+      const message = `상금 : ${stackedMoney} BTC\n\n${
         interaction.user
       }형이 룰렛을 돌리는 중이야!\n\n[ 🦖 | 💩 | 🇰🇷 | 💰 | 🍔 | 🐮 | 🐞 | ⭐️ | 🐵 | 🍌 ]\n\n🐞 🐞 🐞 나오면 잭팟! \n\n${
         characters[result[1]]
