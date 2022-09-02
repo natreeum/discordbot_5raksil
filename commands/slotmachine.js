@@ -297,8 +297,7 @@ module.exports = {
     } else {
       const loseGame = await updateGame({
         id: gameData.id,
-        // prize: gameData.prize + price / 2,
-        prize: gameData.prize + 1800,
+        prize: gameData.prize + price / 2,
         hasWinner: gameData.hasWinner,
         winner: gameData.winner,
       });
