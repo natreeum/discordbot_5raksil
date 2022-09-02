@@ -115,13 +115,13 @@ module.exports = {
     }
 
     //isStarted Check
-    if (isStarted == true) {
-      await interaction.reply({
-        content: `누군가 룰렛을 돌리고 있어. 잠시 후에 도전해봐!`,
-        ephemeral: true,
-      });
-      return;
-    }
+    // if (isStarted == true) {
+    //   await interaction.reply({
+    //     content: `누군가 룰렛을 돌리고 있어. 잠시 후에 도전해봐!`,
+    //     ephemeral: true,
+    //   });
+    //   return;
+    // }
 
     const user = interaction.user;
     //userStarted
