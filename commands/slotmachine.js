@@ -183,11 +183,14 @@ module.exports = {
       )
     );
     for (let i = 1; i < 4; i++) {
+      let num = 0;
       //3~7
       const countRand = Math.floor(Math.random() * 3 + 5);
       for (let j = 0; j < countRand; j++) {
-        // await delay(300);
-        gameDataMap.get(user)[i] = await randNum();
+        // await delay(50);
+        num = await randNum();
+        gameDataMap.get(user)[i] = num;
+
         await interaction.editReply(
           defMessage(
             user,
@@ -294,7 +297,8 @@ module.exports = {
     } else {
       const loseGame = await updateGame({
         id: gameData.id,
-        prize: gameData.prize + price / 2,
+        // prize: gameData.prize + price / 2,
+        prize: gameData.prize + 1800,
         hasWinner: gameData.hasWinner,
         winner: gameData.winner,
       });
