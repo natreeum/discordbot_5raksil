@@ -214,8 +214,8 @@ module.exports = {
       scissors: Math.round((seconduserdata.scissors / seconduserSum) * 100),
       paper: Math.round((seconduserdata.paper / seconduserSum) * 100),
     };
-    const firstuserScoreMessage = `\`${chat[2]} : ${firstuserScore.scissors}% ${chat[1]} : ${firstuserScore.rock}% ${chat[3]} : ${firstuserScore.paper}% : <@${firstuser.id}>의 전적\` \n`;
-    const seconduserScoreMessage = `\`${chat[2]} : ${seconduserScore.scissors}% ${chat[1]} : ${seconduserScore.rock}% ${chat[3]} : ${seconduserScore.paper}% : <@${seconduser.id}>의 전적\`  \n\n`;
+    const firstuserScoreMessage = `${chat[2]} : ${firstuserScore.scissors}% ${chat[1]} : ${firstuserScore.rock}% ${chat[3]} : ${firstuserScore.paper}% : <@${firstuser.id}>의 전적 \n`;
+    const seconduserScoreMessage = `${chat[2]} : ${seconduserScore.scissors}% ${chat[1]} : ${seconduserScore.rock}% ${chat[3]} : ${seconduserScore.paper}% : <@${seconduser.id}>의 전적  \n\n`;
     const basicmessage = `[✌  ✊  ✋]\n**__${betAmountBeforeFee} BTC__** 걸고하는 가위바위보\n${firstuser}vs${seconduser}\n가위바위보를 시작하지... 아래 버튼을 5초 안에 눌러!!!\n`;
     const message =
       firstuserScoreMessage + seconduserScoreMessage + basicmessage;
