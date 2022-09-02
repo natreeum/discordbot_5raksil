@@ -186,7 +186,7 @@ module.exports = {
       //3~7
       const countRand = Math.floor(Math.random() * 3 + 5);
       for (let j = 0; j < countRand; j++) {
-        await delay(300);
+        // await delay(300);
         gameDataMap.get(user)[i] = await randNum();
         await interaction.editReply(
           defMessage(
@@ -203,6 +203,7 @@ module.exports = {
           check[i - 1] = "✅";
         }
       }
+      await delay(300);
     }
 
     //secondPrize
