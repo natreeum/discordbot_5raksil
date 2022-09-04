@@ -55,7 +55,7 @@ class BankManager {
         storageName: "BUGkshireHathaway",
         amount,
         token: bugcity,
-        userId: user,
+        userId: user.id,
         memo: "BUGkshireHathaway withdraw",
       };
       const params = new URLSearchParams();
@@ -145,18 +145,18 @@ class BankManager {
       });
 
       const json = await resp.json();
-      console.log(user.id, "deposit", amount);
+      console.log(user, "deposit", amount);
       if (json.data.state === "success") {
-        log(`[DEPOSIT SUCCESS] <@${user.id}> - ${amount} BTC 🐞`);
+        log(`[DEPOSIT SUCCESS] <@${user}> - ${amount} BTC 🐞`);
       } else if (json.data.state === "error") {
         log(
-          `[DEPOSIT FAILED]\n${json.data.message}\n<@${user.id}> - ${amount} BTC 🐞`
+          `[DEPOSIT FAILED]\n${json.data.message}\n<@${user}> - ${amount} BTC 🐞`
         );
       }
       return json;
     } catch (e) {
       console.error(e);
-      log(`[DEPOSIT FAILED] <@${user.id}> - ${amount} BTC 🐞`);
+      log(`[DEPOSIT FAILED] <@${user}> - ${amount} BTC 🐞`);
       throw new Error("BTC 출금 실패");
     }
   }
@@ -169,7 +169,7 @@ class BankManager {
         storageName: "BUGkshireHathaway",
         amount,
         token: bugcity,
-        userId: user.id,
+        userId: user,
         memo: "BUGkshireHathaway withdraw",
       };
       const params = new URLSearchParams();
@@ -187,19 +187,19 @@ class BankManager {
       });
 
       const json = await resp.json();
-      console.log(user.id, "withdraw", amount);
+      console.log(user, "withdraw", amount);
       if (json.data.state === "success") {
-        log(`[WITHDRAW SUCCESS] <@${user.id}> - ${amount} BTC 🐞`);
+        log(`[WITHDRAW SUCCESS] <@${user}> - ${amount} BTC 🐞`);
       } else {
         log(
-          `[WITHDRAW FAILED]\n${json.data.message}\n<@${user.id}> - ${amount} BTC 🐞`
+          `[WITHDRAW FAILED]\n${json.data.message}\n<@${user}> - ${amount} BTC 🐞`
         );
       }
       return json;
     } catch (e) {
       console.error(e);
       log(
-        `[WITHDRAW FAILED]\n${json.data.message}\n<@${user.id}> - ${amount} BTC 🐞`
+        `[WITHDRAW FAILED]\n${json.data.message}\n<@${user}> - ${amount} BTC 🐞`
       );
       throw new Error("BTC 입금 실패");
     }
@@ -211,7 +211,7 @@ class BankManager {
     if (state === "error") {
       return { data: { state: "error" } };
     }
-    const json = await this.depositBTCbyId(user, 1);
+    const json = await this.depositBTCbyid(user, 1);
     return json;
   }
 }
