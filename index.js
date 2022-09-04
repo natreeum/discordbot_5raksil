@@ -3,6 +3,7 @@ const path = require("node:path");
 
 const { Client, Collection, GatewayIntentBits } = require("discord.js");
 const { token } = require("./config.js");
+const { distribute } = require(`./cronjob/distribute`);
 
 const client = new Client({
   intents: [
@@ -28,6 +29,8 @@ for (const file of commandFiles) {
 
 client.once("ready", () => {
   console.log("Ready!");
+  distribute(client);
+  console.log(`distribute complete`);
 });
 
 client.on("interactionCreate", async (interaction) => {
