@@ -4,10 +4,8 @@ const { loadGame } = require(`../prisma/slotmachine`);
 const { holderList, debt, dividendPercentage } = require(`../data`);
 
 async function distribute(client) {
-  const casinoCEO = client.users.cache.find(
-    (user) => user.id === "251349298300715008"
-  );
-  const balances = await bankManager.getBalances(casinoCEO);
+  const casinoCEO = "251349298300715008";
+  const balances = await bankManager.getBalancesById(casinoCEO);
   const storageBalance = balances.data.storage;
   const stackedMoney = loadGame().prize;
   const profit = storageBalance - debt - stackedMoney;
@@ -17,7 +15,10 @@ async function distribute(client) {
 
   let message = `벅크셔해서웨이 잔액 : ${storageBalance}, 정부 대출 : ${debt}, 슬롯머신 잭팟 : ${stackedMoney}, 배당금 비율 : 수익의 ${dividendPercentage}%`;
   if (profit > 40) {
-    await bankManager.withdrawBTC(casinoCEO, String(Math.round(profit / 2)));
+    await bankManager.withdrawBTCbyId(
+      casinoCEO,
+      String(Math.round(profit / 2))
+    );
     message += `\n카지노 수익금 : ${profit}, 총 배당금 : ${
       (profit * dividendPercentage) / 100
     }, 배당금 : ${personalDividend}\n`;
@@ -25,7 +26,7 @@ async function distribute(client) {
       const holder = client.users.cache.find(
         (user) => user.id === holderList.i
       );
-      await bankManager.withdrawBTC(holder, String(personalDividend));
+      await bankManager.withdrawBTCbyId(holder, String(personalDividend));
       message += `#${i} 홀더 : <@${holderList.i}>\n`;
     }
     message += `배당금 ${personalDividend} BTC 가 지급되었습니다.`;
