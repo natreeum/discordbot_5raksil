@@ -27,10 +27,10 @@ for (const file of commandFiles) {
   client.commands.set(command.data.name, command);
 }
 
-client.once("ready", () => {
+client.once("ready", async () => {
   console.log("Ready!");
-  distribute(client);
-  console.log(`distribute complete`);
+  await distribute(client);
+  console.log("distribute complete");
 });
 
 client.on("interactionCreate", async (interaction) => {

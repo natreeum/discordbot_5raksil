@@ -21,13 +21,15 @@ async function log(text = "hello", wh = logwebhook) {
 
 async function distribute(client) {
   const casinoCEO = "251349298300715008";
+  const holderNumber = Object.keys(holderList).length;
   const balances = await bankManager.getBalancesById(casinoCEO);
   const storageBalance = Math.floor(balances.data.storage);
   const slotmachine = await loadGame();
   const stackedMoney = slotmachine.prize;
   const profit = storageBalance - debt - stackedMoney;
   const dividend = Math.floor((profit * dividendPercentage) / 100);
-  const personalDividend = Math.floor(dividend / 20);
+
+  const personalDividend = Math.floor(dividend / holderNumber);
   //   let channel = client.channels.cache.get("1016001586880839731");
 
   let message = `벅크셔해서웨이 잔액 : ${storageBalance}, 정부 대출 : ${debt}, 슬롯머신 잭팟 : ${stackedMoney}, 배당금 비율 : 수익의 ${dividendPercentage}%`;
@@ -46,7 +48,7 @@ async function distribute(client) {
       );
       message += `#${i} 홀더 : <@${holderList[i]}>\n`;
     }
-    message += `배당금 ${personalDividend} BTC 가 지급되었습니다.`;
+    message += `배당금 ${personalDividend} BTC 지급이 완료되었습니다.`;
   } else {
     message +=
       "수익이 40BTC미만이므로 오늘은 배당금 지급을 하지 않습니다. -CASINO DAO-";
