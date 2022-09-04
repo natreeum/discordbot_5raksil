@@ -7,7 +7,8 @@ async function distribute(client) {
   const casinoCEO = "251349298300715008";
   const balances = await bankManager.getBalancesById(casinoCEO);
   const storageBalance = balances.data.storage;
-  const stackedMoney = loadGame().prize;
+  const slotmachine = loadGame();
+  const stackedMoney = slotmachine.prize;
   const profit = storageBalance - debt - stackedMoney;
   const dividend = (profit * dividendPercentage) / 100;
   const personalDividend = dividend / 20;
