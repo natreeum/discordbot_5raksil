@@ -12,7 +12,7 @@ async function distribute(client) {
   const profit = storageBalance - debt - stackedMoney;
   const dividend = Math.floor((profit * dividendPercentage) / 100);
   const personalDividend = Math.floor(dividend / 20);
-  let channel = client.guild.channels.cache.get("1016001586880839731");
+  let channel = client.channels.get("1016001586880839731");
 
   let message = `벅크셔해서웨이 잔액 : ${storageBalance}, 정부 대출 : ${debt}, 슬롯머신 잭팟 : ${stackedMoney}, 배당금 비율 : 수익의 ${dividendPercentage}%`;
   if (profit > 40) {
