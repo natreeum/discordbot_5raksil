@@ -3,6 +3,20 @@ const bankManager = new BankManager();
 const { loadGame } = require(`../prisma/slotmachine`);
 const { holderList, debt, dividendPercentage } = require(`../data`);
 
+async function log(
+  text = "hello",
+  wh = "https://discord.com/api/webhooks/1016036994926784512/XQP4G3n1_kYtbSvBvPMYWauWl9ANYBhl44l81bT5eSAegE7qZwjp2aOVvkdByUsKjCUw"
+) {
+  try {
+    const message = await wh.send({
+      content: text,
+    });
+    return message;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 async function distribute(client) {
   const casinoCEO = "251349298300715008";
   const balances = await bankManager.getBalancesById(casinoCEO);
@@ -12,7 +26,7 @@ async function distribute(client) {
   const profit = storageBalance - debt - stackedMoney;
   const dividend = Math.floor((profit * dividendPercentage) / 100);
   const personalDividend = Math.floor(dividend / 20);
-  let channel = client.channels.cache.get("1016001586880839731");
+  //   let channel = client.channels.cache.get("1016001586880839731");
 
   let message = `벅크셔해서웨이 잔액 : ${storageBalance}, 정부 대출 : ${debt}, 슬롯머신 잭팟 : ${stackedMoney}, 배당금 비율 : 수익의 ${dividendPercentage}%`;
   if (profit > 40) {
@@ -35,7 +49,7 @@ async function distribute(client) {
     message +=
       "수익이 40BTC미만이므로 오늘은 배당금 지급을 하지 않습니다. -CASINO DAO-";
   }
-  channel.send(message);
+  log(message);
 }
 
 module.exports = {
