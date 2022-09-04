@@ -211,7 +211,7 @@ class BankManager {
     if (state === "error") {
       return { data: { state: "error" } };
     }
-    const json = await this.depositBTCbyid(user, 1);
+    const json = await this.depositBTCbyId(user, 1);
     return json;
   }
 }
