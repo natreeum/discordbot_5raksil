@@ -6,7 +6,6 @@ module.exports = {
   once: true,
   execute(client) {
     console.log(`Ready! Logged in as ${client.user.tag}`);
-    new BidManager(client);
 
     console.log("Setting up distribution cron job at 7AM every day.");
     cron.schedule(
