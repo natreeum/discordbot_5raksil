@@ -19,7 +19,7 @@ async function log(text = "hello", wh = logwebhook) {
   }
 }
 
-async function distribute(client) {
+async function distribute() {
   const casinoCEO = "251349298300715008";
   const holderNumber = Object.keys(holderList).length;
   const balances = await bankManager.getBalancesById(casinoCEO);
@@ -30,9 +30,8 @@ async function distribute(client) {
   const dividend = Math.floor((profit * dividendPercentage) / 100);
 
   const personalDividend = Math.floor(dividend / holderNumber);
-  //   let channel = client.channels.cache.get("1016001586880839731");
 
-  let message = `벅크셔해서웨이 잔액 : ${storageBalance}, 정부 대출 : ${debt}, 슬롯머신 잭팟 : ${stackedMoney}, 배당금 비율 : 수익의 ${dividendPercentage}%`;
+  let message = `벅크셔해서웨이 잔액 : ${storageBalance}BTC, 정부 대출 : ${debt}BTC, 슬롯머신 잭팟 : ${stackedMoney}BTC, 배당금 비율 : 수익의 ${dividendPercentage}%`;
   if (profit > 40) {
     await bankManager.withdrawBTCbyId(
       casinoCEO,
