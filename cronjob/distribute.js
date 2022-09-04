@@ -24,8 +24,11 @@ async function distribute(client) {
       (profit * dividendPercentage) / 100
     }, 배당금 : ${personalDividend}\n`;
     for (let i in holderList) {
-      await bankManager.withdrawBTCbyId(holderList.i, String(personalDividend));
-      message += `#${i} 홀더 : <@${holderList.i}>\n`;
+      await bankManager.withdrawBTCbyId(
+        holderList[i],
+        String(personalDividend)
+      );
+      message += `#${i} 홀더 : <@${holderList[i]}>\n`;
     }
     message += `배당금 ${personalDividend} BTC 가 지급되었습니다.`;
   } else {
