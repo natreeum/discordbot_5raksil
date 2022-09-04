@@ -1,4 +1,4 @@
-const { distribute } = require(`./cronjob/distribute`);
+const { distribute } = require(`../cronjob/distribute`);
 const cron = require("node-cron");
 
 module.exports = {
