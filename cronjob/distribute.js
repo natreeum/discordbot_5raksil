@@ -2,11 +2,13 @@ const BankManager = require(`../bank/BankManager`);
 const bankManager = new BankManager();
 const { loadGame } = require(`../prisma/slotmachine`);
 const { holderList, debt, dividendPercentage } = require(`../data`);
-
-async function log(
-  text = "hello",
-  wh = "https://discord.com/api/webhooks/1016036994926784512/XQP4G3n1_kYtbSvBvPMYWauWl9ANYBhl44l81bT5eSAegE7qZwjp2aOVvkdByUsKjCUw"
-) {
+const { WebhookClient } = require("discord.js");
+const webhook =
+  "https://discord.com/api/webhooks/1016036994926784512/XQP4G3n1_kYtbSvBvPMYWauWl9ANYBhl44l81bT5eSAegE7qZwjp2aOVvkdByUsKjCUw";
+const logwebhook = new WebhookClient({
+  url: webhook,
+});
+async function log(text = "hello", wh = logwebhook) {
   try {
     const message = await wh.send({
       content: text,
