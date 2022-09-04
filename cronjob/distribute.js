@@ -38,9 +38,9 @@ async function distribute(client) {
       casinoCEO,
       String(Math.round(profit / 2))
     );
-    message += `\n카지노 수익금 : ${profit}, 총 배당금 : ${
+    message += `\n카지노 수익금 : ${profit}, 배당금 : ${
       (profit * dividendPercentage) / 100
-    }, 배당금 : ${personalDividend}\n`;
+    }, 개인 할당 금액 : ${personalDividend}\n`;
     for (let i in holderList) {
       await bankManager.withdrawBTCbyId(
         holderList[i],
@@ -51,7 +51,7 @@ async function distribute(client) {
     message += `배당금 ${personalDividend} BTC 지급이 완료되었습니다.`;
   } else {
     message +=
-      "수익이 40BTC미만이므로 오늘은 배당금 지급을 하지 않습니다. -CASINO DAO-";
+      "\n카지노 수익이 40BTC미만이므로 오늘은 배당금 지급을 하지 않습니다. -CASINO DAO-";
   }
   log(message);
 }
