@@ -88,7 +88,7 @@ module.exports = {
       const addUser = interaction.options.getUser(`user`);
       const addPointResult = await addPoint({
         discordId: addUser.id,
-        addpoint: amount,
+        addingpoint: amount,
       });
       await interaction.reply(
         `${addUser}에게 ${amount}CDP 적립되었습니다. | CDP : ${addPointResult.point}`
