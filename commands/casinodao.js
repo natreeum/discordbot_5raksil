@@ -83,7 +83,7 @@ module.exports = {
         addingpoint: amount,
       });
       const userPoint = await getPoint(addUser.id);
-      console.log(addPointResult);
+      console.log(userPoint);
       await interaction.reply(
         `${addUser}에게 ${amount}CDP 적립되었습니다. | CDP : ${userPoint.potin}`
       );
