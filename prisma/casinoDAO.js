@@ -49,7 +49,7 @@ async function addPoint(data) {
   try {
     const { discordId, addingpoint } = data;
     const userPoint = await getPoint(discordId);
-    const point = Number(userPoint.point) + Number(addingpoint);
+    const point = userPoint.point + addingpoint;
 
     if (!userPoint) {
       createUser(discordId);

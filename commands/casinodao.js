@@ -144,7 +144,7 @@ module.exports = {
         });
         return;
       }
-      let i = 0;
+      let i = 1;
       while (true) {
         const data = await getPointbyId(i);
         if (!data) {
@@ -153,6 +153,7 @@ module.exports = {
         await editPoint({ discordId: data.discordId, point: 0 });
         i++;
       }
+      await interaction.reply(`CDP; Casino DAO Point 가 초기화 되었습니다.`);
     }
   },
 };
