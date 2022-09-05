@@ -1,4 +1,20 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, formatEmoji } = require("discord.js");
+const { holderList } = require(`../data`);
+const {
+  getPoint,
+  addPoint,
+  getPointbyId,
+  editPoint,
+} = require(`../prisma/casinoDAO`);
+
+const casinoDAOChannel = "1016001586880839731";
+const casinoDAOStaff = [
+  "891720202583166976",
+  "251349298300715008",
+  "496619115382046731",
+  "247333169370628096",
+  "337163981338968065",
+];
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -8,6 +24,9 @@ module.exports = {
       subcommand
         .setName(`add`)
         .setDescription(`add casinoDAO point`)
+        .addUserOption((option) =>
+          option.setName(`user`).setDescription(`choose user`).setRequired(true)
+        )
         .addIntegerOption((option) =>
           option
             .setName(`amount`)
@@ -36,11 +55,102 @@ module.exports = {
             .setDescription(`enter password`)
             .setRequired(true)
         )
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName(`holders`)
+        .setDescription(`show holders`)
+        .addStringOption((option) =>
+          option
+            .setName(`password`)
+            .setDescription(`enter password`)
+            .setRequired(true)
+        )
     ),
   async execute(interaction) {
     if (interaction.options.getSubcommand() === `add`) {
-    } else if (interaction.options.getSubcommand() === `show`) {
-    } else if (interaction.options.getSubcommand() === `reset`) {
+      if (interaction.channel.id != casinoDAOChannel) {
+        await interaction.reply({
+          content: `<#${casinoDAOChannel}>에서만 사용가능한 명령어입니다.`,
+          ephemeral: true,
+        });
+        return;
+      }
+      if (!casinoDAOStaff.includes(interaction.user.id)) {
+        await interaction.reply({
+          content: `casinoDAO 운영진만 사용 가능한 명령어입니다.`,
+          ephemeral: true,
+        });
+        return;
+      }
+      const amount = interaction.options.getInteger(`amount`);
+      const addUser = interaction.options.getUser(`user`);
+      const addPointResult = await addPoint({
+        discordId: addUser.id,
+        addpoint: amount,
+      });
+      await interaction.reply(
+        `${addUser}에게 ${amount}CDP 적립되었습니다. | CDP : ${addPointResult.point}`
+      );
+    }
+    //show
+    else if (interaction.options.getSubcommand() === `show`) {
+      if (interaction.channel.id != casinoDAOChannel) {
+        await interaction.reply({
+          content: `<#${casinoDAOChannel}>에서만 사용가능한 명령어입니다.`,
+          ephemeral: true,
+        });
+        return;
+      }
+      let flag = false;
+      for (let i of Object.keys(holderList)) {
+        if (holderList[i] === interaction.user.id) {
+          flag = true;
+        }
+      }
+      if (flag == false) {
+        await interaction.reply({
+          content: `CASINO DAO 홀더만 사용가능한 명령어입니다.`,
+          ephemeral: true,
+        });
+        return;
+      }
+      const getPointResult = await getPoint(interaction.user.id);
+      if (getPointResult) {
+        await interaction.reply(
+          `${interaction.user}의 CDP : ${getPointResult.point}`
+        );
+      } else {
+        await interaction.reply(
+          `${interaction.user}의 포인트 기록이 없습니다.`
+        );
+      }
+    }
+    //reset
+    else if (interaction.options.getSubcommand() === `reset`) {
+      if (interaction.channel.id != casinoDAOChannel) {
+        await interaction.reply({
+          content: `<#${casinoDAOChannel}>에서만 사용가능한 명령어입니다.`,
+          ephemeral: true,
+        });
+        return;
+      }
+      if (!casinoDAOStaff.includes(interaction.user.id)) {
+        await interaction.reply({
+          content: `casinoDAO 운영진만 사용 가능한 명령어입니다.`,
+          ephemeral: true,
+        });
+        return;
+      }
+      let i = 0;
+      while (true) {
+        const data = await getPointbyId(i);
+        if (!data) {
+          break;
+        }
+        await editPoint({ discordId: data.discordId, point: 0 });
+        i++;
+      }
     }
   },
 };
