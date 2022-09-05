@@ -82,9 +82,10 @@ module.exports = {
         discordId: addUser.id,
         addingpoint: amount,
       });
+      const userPoint = await getPoint(addUser.id);
       console.log(addPointResult);
       await interaction.reply(
-        `${addUser}에게 ${amount}CDP 적립되었습니다. | CDP : ${addPointResult.point}`
+        `${addUser}에게 ${amount}CDP 적립되었습니다. | CDP : ${userPoint.potin}`
       );
     }
     //show
@@ -145,7 +146,7 @@ module.exports = {
         await editPoint({ discordId: data.discordId, point: 0 });
         i++;
       }
-      await interaction.reply(`CDP; Casino DAO Point 가 초기화 되었습니다.`);
+      await interaction.reply(`CDP가 초기화 되었습니다.`);
     }
     //holders
     else if (interaction.options.getSubcommand() === `holders`) {
