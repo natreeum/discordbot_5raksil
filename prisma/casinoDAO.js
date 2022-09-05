@@ -47,7 +47,7 @@ async function getPointbyId(id) {
 //addPoint
 async function addPoint(data) {
   try {
-    const { discordId, addpoint } = data;
+    const { discordId, addingpoint } = data;
     const userPoint = await getPoint(discordId);
     console.log(userPoint);
     if (!userPoint) {
@@ -58,7 +58,7 @@ async function addPoint(data) {
         discordId,
       },
       data: {
-        point: userPoint.point + addpoint,
+        point: userPoint.point + addingpoint,
       },
     });
     return addPoint;
