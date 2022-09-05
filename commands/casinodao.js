@@ -57,15 +57,7 @@ module.exports = {
         )
     )
     .addSubcommand((subcommand) =>
-      subcommand
-        .setName(`holders`)
-        .setDescription(`show holders`)
-        .addStringOption((option) =>
-          option
-            .setName(`password`)
-            .setDescription(`enter password`)
-            .setRequired(true)
-        )
+      subcommand.setName(`holders`).setDescription(`show holders`)
     ),
   async execute(interaction) {
     //add
@@ -154,6 +146,21 @@ module.exports = {
         i++;
       }
       await interaction.reply(`CDP; Casino DAO Point 가 초기화 되었습니다.`);
+    }
+    //holders
+    else if (interaction.options.getSubcommand() === `holders`) {
+      if (interaction.channel.id != casinoDAOChannel) {
+        await interaction.reply({
+          content: `<#${casinoDAOChannel}>에서만 사용가능한 명령어입니다.`,
+          ephemeral: true,
+        });
+        return;
+      }
+      let message = `CASINO DAO Holders\n\n`;
+      for (let i of Object.keys(holderList)) {
+        message += `#${i} : <@${holderList[i]}>\n`;
+      }
+      await interaction.reply(message);
     }
   },
 };
