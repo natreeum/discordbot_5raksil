@@ -48,17 +48,16 @@ async function getPointbyId(id) {
 async function addPoint(data) {
   try {
     const { discordId, addpoint } = data;
-    const userPoint = getPoint(discordId);
+    const userPoint = await getPoint(discordId);
     if (!userPoint) {
       createUser(discordId);
     }
-    const getPoint = await getPoint(discordId);
     const addPoint = await prisma.casinodaopoint.updateMany({
       where: {
         discordId,
       },
       data: {
-        point: getPoint.point + addpoint,
+        point: userPoint.point + addpoint,
       },
     });
     return addPoint;
