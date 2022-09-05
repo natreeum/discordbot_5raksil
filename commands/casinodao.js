@@ -90,6 +90,7 @@ module.exports = {
         discordId: addUser.id,
         addingpoint: amount,
       });
+      console.log(addPointResult);
       await interaction.reply(
         `${addUser}에게 ${amount}CDP 적립되었습니다. | CDP : ${addPointResult.point}`
       );
