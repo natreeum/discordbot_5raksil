@@ -68,6 +68,7 @@ module.exports = {
         )
     ),
   async execute(interaction) {
+    //add
     if (interaction.options.getSubcommand() === `add`) {
       if (interaction.channel.id != casinoDAOChannel) {
         await interaction.reply({

@@ -49,6 +49,7 @@ async function addPoint(data) {
   try {
     const { discordId, addpoint } = data;
     const userPoint = await getPoint(discordId);
+    console.log(userPoint);
     if (!userPoint) {
       createUser(discordId);
     }
