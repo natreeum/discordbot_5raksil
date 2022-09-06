@@ -36,9 +36,6 @@ async function updateTreasury(data) {
     const { name, amount } = data;
     const treasuryData = await getTreasuryData(id);
 
-    if (!treasuryData) {
-      createtreasury(name);
-    }
     const dateUpdateRes = await prisma.Casinodaopointtreasury.updateMany({
       where: {
         name,
@@ -55,6 +52,7 @@ async function updateTreasury(data) {
 }
 
 module.exports = {
+  createtreasury,
   getTreasuryData,
   updateTreasury,
 };

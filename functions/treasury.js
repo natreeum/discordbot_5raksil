@@ -1,4 +1,5 @@
 const {
+  createtreasury,
   getTreasuryData,
   updateTreasury,
 } = require(`../prisma/casinoDao/treasury`);
@@ -38,4 +39,12 @@ async function setTreasury(interaction, id, amount) {
   );
 }
 
-module.exports = { getTreasury, setTreasury };
+async function newTreasury(interaction, name) {
+  await interaction.deferReply();
+  const treasury = await createtreasury(name);
+  await interaction.editReply(
+    `[${treasury.id}] ${treasury.name} : 트레져리 생성 완료`
+  );
+}
+
+module.exports = { getTreasury, setTreasury, newTreasury };

@@ -8,7 +8,11 @@ const {
   getCheckDate,
   updateCheckDate,
 } = require(`../prisma/casinoDAO`);
-const { setTreasury, getTreasury } = require(`../functions/treasury`);
+const {
+  setTreasury,
+  getTreasury,
+  newTreasury,
+} = require(`../functions/treasury`);
 const BankManager = require(`../bank/BankManager`);
 const bankManager = new BankManager();
 const checkAmount = 10;
@@ -78,7 +82,8 @@ module.exports = {
             .setDescription("choose menu")
             .addChoices(
               { name: "add", value: "add" },
-              { name: "get", value: "get" }
+              { name: "get", value: "get" },
+              { name: "new", value: "new" }
             )
             .setRequired(true)
         )
@@ -87,6 +92,9 @@ module.exports = {
         )
         .addIntegerOption((option) =>
           option.setName("amount").setDescription("enter amount")
+        )
+        .addStringOption((option) =>
+          option.setName("name").setDescription("enter treasury name")
         )
     ),
   async execute(interaction) {
@@ -253,6 +261,10 @@ module.exports = {
         await setTreasury(interaction, id, amount);
       } else if (menu === "get") {
         await getTreasury(interaction);
+      } else if (menu === "new") {
+        const name = interaction.options.getString(`name`);
+
+        await getTreasury(interaction, name);
       }
     }
   },
