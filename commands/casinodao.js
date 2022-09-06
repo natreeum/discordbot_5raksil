@@ -230,11 +230,12 @@ module.exports = {
       const userCheckData = await getCheckDate(interaction.user.id);
       const treasuryBalanc = await getTreasuryData(1);
       const treasuryBalance = treasuryBalanc.amount;
+      console.log(treasuryBalance);
       if (userCheckData) {
         if (userCheckData.checkDate == date) {
           await interaction.editReply(`출석체크는 하루에 한번만 가능해~`);
         } else {
-          if (treasuryBalance > checkAmount) {
+          if (treasuryBalance >= checkAmount) {
             await updateCheckDate({
               discordId: interaction.user.id,
               checkDate: date,
@@ -246,10 +247,14 @@ module.exports = {
             await interaction.editReply(
               `${interaction.user}형 하이~ 오늘도 CAINO DAO 찾아와 줘서 고마워😉 10 BTC 낭낭하게 입금 완료!`
             );
+          } else {
+            await interaction.editReply(
+              `🫢 출석체크 트레져리 잔고가 부족한거같아.. 잠시만 기다려줘..`
+            );
           }
         }
       } else {
-        if (treasuryBalance > checkAmount) {
+        if (treasuryBalance >= checkAmount) {
           await updateCheckDate({
             discordId: interaction.user.id,
             checkDate: date,
@@ -257,6 +262,10 @@ module.exports = {
           await bankManager.withdrawBTC(interaction.user, String(checkAmount));
           await interaction.editReply(
             `${interaction.user}형 하이~ 오늘도 CAINO DAO 찾아와 줘서 고마워😉 10 BTC 낭낭하게 입금 완료!`
+          );
+        } else {
+          await interaction.editReply(
+            `🫢 출석체크 트레져리 잔고가 부족한거같아.. 잠시만 기다려줘..`
           );
         }
       }

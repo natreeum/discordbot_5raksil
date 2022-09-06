@@ -29,7 +29,7 @@ async function setTreasury(interaction, id, amount) {
   if (!treasury) {
     await interaction.reply(`존재하지 않는 트레져리입니다.`);
   }
-  const update = await updateTreasury({
+  await updateTreasury({
     name: treasury.name,
     amount: treasury.amount + amount,
   });

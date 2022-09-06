@@ -1,6 +1,7 @@
 const BankManager = require(`../bank/BankManager`);
 const bankManager = new BankManager();
 const { loadGame } = require(`../prisma/slotmachine`);
+const { getTreasuryData } = require(`../prisma/casinoDao/treasury`);
 const { holderList, debt, dividendPercentage } = require(`../data`);
 const { WebhookClient } = require("discord.js");
 const webhook =
@@ -25,13 +26,15 @@ async function distribute() {
   const balances = await bankManager.getBalancesById(casinoCEO);
   const storageBalance = Math.floor(balances.data.storage);
   const slotmachine = await loadGame();
+  const checkBalance = await getTreasuryData(1);
+  const checkAmount = checkBalance.amount;
   const stackedMoney = slotmachine.prize;
-  const profit = storageBalance - debt - stackedMoney;
+  const profit = storageBalance - debt - stackedMoney - checkAmount;
   const dividend = Math.floor((profit * dividendPercentage) / 100);
 
   const personalDividend = Math.floor(dividend / holderNumber);
 
-  let message = `벅크셔해서웨이 잔액 : ${storageBalance}BTC, 정부 대출 : ${debt}BTC, 슬롯머신 잭팟 : ${stackedMoney}BTC, 배당금 비율 : 수익의 ${dividendPercentage}%`;
+  let message = `벅크셔해서웨이 잔액 : ${storageBalance}BTC, 정부 대출 : ${debt}BTC, 슬롯머신 잭팟 : ${stackedMoney}BTC, 출석체크 트레져리 : ${checkAmount}, 배당금 비율 : 수익의 ${dividendPercentage}%`;
   if (profit > 40) {
     await bankManager.withdrawBTCbyId(
       casinoCEO,
