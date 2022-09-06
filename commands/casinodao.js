@@ -278,7 +278,7 @@ module.exports = {
       } else if (menu === "new") {
         const name = interaction.options.getString(`name`);
 
-        await getTreasury(interaction, name);
+        await newTreasury(interaction, name);
       }
     }
   },
