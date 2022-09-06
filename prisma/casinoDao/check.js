@@ -3,7 +3,7 @@ const prisma = require("../prisma");
 //create userCheckDate
 async function createUserCheckDate(discordId) {
   try {
-    const userData = await prisma.checkdata.create({
+    const userData = await prisma.checkData.create({
       data: {
         discordId,
       },
@@ -18,7 +18,7 @@ async function createUserCheckDate(discordId) {
 //getCheckDate
 async function getCheckDate(discordId) {
   try {
-    const userCheckDate = await prisma.checkdata.findFirst({
+    const userCheckDate = await prisma.checkData.findFirst({
       where: {
         discordId,
       },
@@ -39,7 +39,7 @@ async function updateCheckDate(data) {
     if (!userCheckDate) {
       createUserCheckDate(discordId);
     }
-    const dateUpdateRes = await prisma.checkdata.updateMany({
+    const dateUpdateRes = await prisma.checkData.updateMany({
       where: {
         discordId,
       },
