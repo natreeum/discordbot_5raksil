@@ -7,6 +7,7 @@ const {
   editPoint,
   getCheckDate,
   updateCheckDate,
+  getTreasuryData,
 } = require(`../prisma/casinoDAO`);
 const {
   setTreasury,
@@ -227,11 +228,28 @@ module.exports = {
       const date =
         "" + today.getFullYear() + today.getMonth() + today.getDate();
       const userCheckData = await getCheckDate(interaction.user.id);
-
+      const treasuryBalanc = await getTreasuryData(1);
+      const treasuryBalance = treasuryBalanc.amount;
       if (userCheckData) {
         if (userCheckData.checkDate == date) {
           await interaction.editReply(`출석체크는 하루에 한번만 가능해~`);
         } else {
+          if (treasuryBalance > checkAmount) {
+            await updateCheckDate({
+              discordId: interaction.user.id,
+              checkDate: date,
+            });
+            await bankManager.withdrawBTC(
+              interaction.user,
+              String(checkAmount)
+            );
+            await interaction.editReply(
+              `${interaction.user}형 하이~ 오늘도 CAINO DAO 찾아와 줘서 고마워😉 10 BTC 낭낭하게 입금 완료!`
+            );
+          }
+        }
+      } else {
+        if (treasuryBalance > checkAmount) {
           await updateCheckDate({
             discordId: interaction.user.id,
             checkDate: date,
@@ -241,15 +259,6 @@ module.exports = {
             `${interaction.user}형 하이~ 오늘도 CAINO DAO 찾아와 줘서 고마워😉 10 BTC 낭낭하게 입금 완료!`
           );
         }
-      } else {
-        await updateCheckDate({
-          discordId: interaction.user.id,
-          checkDate: date,
-        });
-        await bankManager.withdrawBTC(interaction.user, String(checkAmount));
-        await interaction.editReply(
-          `${interaction.user}형 하이~ 오늘도 CAINO DAO 찾아와 줘서 고마워😉 10 BTC 낭낭하게 입금 완료!`
-        );
       }
     }
     //트레져리
