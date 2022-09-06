@@ -1,4 +1,10 @@
 const prisma = require("./prisma");
+const { getCheckDate, updateCheckDate } = require(`./casinoDao/check`);
+const {
+  createtreasury,
+  getTreasuryData,
+  updateTreasury,
+} = require(`./casinoDao/treasury`);
 
 //create user
 async function createUser(discordId) {
@@ -93,4 +99,9 @@ module.exports = {
   addPoint,
   getPointbyId,
   editPoint,
+  getCheckDate,
+  updateCheckDate,
+  createtreasury,
+  getTreasuryData,
+  updateTreasury,
 };

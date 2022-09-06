@@ -30,3 +30,15 @@ model Casinodaopoint {
   discordId String
   point     Int    @default(0)
 }
+
+model CheckData {
+  id        Int    @id @default(autoincrement())
+  discordId String
+  checkDate String @default("0")
+}
+
+model Casinodaopointtreasury {
+  id     Int    @id @default(autoincrement())
+  name   String
+  amount Int    @default(0)
+}

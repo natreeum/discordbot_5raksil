@@ -5,7 +5,13 @@ const {
   addPoint,
   getPointbyId,
   editPoint,
+  getCheckDate,
+  updateCheckDate,
 } = require(`../prisma/casinoDAO`);
+const { setTreasury, getTreasury } = require(`../functions/treasury`);
+const BankManager = require(`../bank/BankManager`);
+const bankManager = new BankManager();
+const checkAmount = 10;
 
 const casinoDAOChannel = "1016001586880839731";
 const casinoDAOStaff = [
@@ -60,7 +66,28 @@ module.exports = {
       subcommand.setName(`holders`).setDescription(`show holders`)
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName(`check`).setDescription(`출석체크`)
+      subcommand.setName(`hi`).setDescription(`출석체크`)
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName(`treasury`)
+        .setDescription(`config treasury`)
+        .addStringOption((option) =>
+          option
+            .setName("menu")
+            .setDescription("choose menu")
+            .addChoices(
+              { name: "add", value: "add" },
+              { name: "get", value: "get" }
+            )
+            .setRequired(true)
+        )
+        .addIntegerOption((option) =>
+          option.setName("id").setDescription("enter id")
+        )
+        .addIntegerOption((option) =>
+          option.setName("amount").setDescription("enter amount")
+        )
     ),
   async execute(interaction) {
     //add
@@ -164,6 +191,58 @@ module.exports = {
         message += `#${i} : <@${holderList[i]}>\n`;
       }
       await interaction.reply(message);
+    }
+    //출석체크
+    else if (interaction.options.getSubcommand() === `hi`) {
+      if (interaction.channel.id != casinoDAOChannel) {
+        await interaction.reply({
+          content: `<#${casinoDAOChannel}>에서만 사용가능한 명령어입니다.`,
+          ephemeral: true,
+        });
+        return;
+      }
+      let flag = false;
+      for (let i of Object.keys(holderList)) {
+        if (holderList[i] === interaction.user.id) {
+          flag = true;
+        }
+      }
+      if (flag == false) {
+        await interaction.reply({
+          content: `CASINO DAO 홀더만 사용가능한 명령어입니다.`,
+          ephemeral: true,
+        });
+        return;
+      }
+      const today = new Date();
+      const date =
+        "" + today.getFullYear() + today.getMonth() + today.getDate();
+      const userCheckData = await getCheckDate(interaction.user.id);
+      if (userCheckData) {
+        if (userCheckData.checkDate == date) {
+          await interaction.reply(`출석체크는 하루에 한번만 가능해~`);
+        } else {
+          await updateCheckDate({
+            discordId: interaction.user.id,
+            checkDate: date,
+          });
+          await bankManager.withdrawBTC(interaction.user, String(checkAmount));
+          await interaction.reply(
+            `${interaction.user}형 하이~ 오늘도 CAINO DAO 찾아와 줘서 고마워😉 10 BTC 낭낭하게 입금 완료!`
+          );
+        }
+      }
+    }
+    //트레져리
+    else if (interaction.options.getSubcommand() === `treasury`) {
+      const menu = interaction.options.getString(`menu`);
+      if (menu === "add") {
+        const id = interaction.options.getInteger(`id`);
+        const amount = interaction.options.getInteger(`amount`);
+        await setTreasury(interaction, id, amount);
+      } else if (menu === "get") {
+        await getTreasury(interaction);
+      }
     }
   },
 };
