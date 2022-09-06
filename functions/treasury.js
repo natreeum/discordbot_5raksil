@@ -25,7 +25,7 @@ async function getTreasury(interaction) {
 
 async function setTreasury(interaction, id, amount) {
   await interaction.deferReply();
-  const treasury = await getTreasuryData(id);
+  let treasury = await getTreasuryData(id);
   if (!treasury) {
     await interaction.reply(`존재하지 않는 트레져리입니다.`);
   }
@@ -34,8 +34,9 @@ async function setTreasury(interaction, id, amount) {
     amount: treasury.amount + amount,
   });
   await bankManager.depositBTC(interaction.user, amount);
+  treasury = await getTreasuryData(id);
   await interaction.editReply(
-    `[${update.id}] ${update.name}의 수량이 ${update.amount} BTC 로 변경되었습니다.`
+    `[${treasury.id}] ${treasury.name}의 수량이 ${treasury.amount} BTC 로 변경되었습니다.`
   );
 }
 
