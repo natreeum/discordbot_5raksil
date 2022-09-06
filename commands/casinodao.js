@@ -254,6 +254,20 @@ module.exports = {
     }
     //트레져리
     else if (interaction.options.getSubcommand() === `treasury`) {
+      if (interaction.channel.id != casinoDAOChannel) {
+        await interaction.reply({
+          content: `<#${casinoDAOChannel}>에서만 사용가능한 명령어입니다.`,
+          ephemeral: true,
+        });
+        return;
+      }
+      if (!casinoDAOStaff.includes(interaction.user.id)) {
+        await interaction.reply({
+          content: `casinoDAO 운영진만 사용 가능한 명령어입니다.`,
+          ephemeral: true,
+        });
+        return;
+      }
       const menu = interaction.options.getString(`menu`);
       if (menu === "add") {
         const id = interaction.options.getInteger(`id`);
