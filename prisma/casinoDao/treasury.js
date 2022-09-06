@@ -34,7 +34,6 @@ async function getTreasuryData(id) {
 async function updateTreasury(data) {
   try {
     const { name, amount } = data;
-    const treasuryData = await getTreasuryData(id);
 
     const dateUpdateRes = await prisma.Casinodaopointtreasury.updateMany({
       where: {
