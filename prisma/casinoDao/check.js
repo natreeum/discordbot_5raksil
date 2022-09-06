@@ -1,4 +1,4 @@
-const prisma = require("./prisma");
+const prisma = require("../prisma");
 
 //create userCheckDate
 async function createUserCheckDate(discordId) {
