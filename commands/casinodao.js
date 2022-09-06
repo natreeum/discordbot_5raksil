@@ -8,6 +8,7 @@ const {
   getCheckDate,
   updateCheckDate,
   getTreasuryData,
+  updateTreasury,
 } = require(`../prisma/casinoDAO`);
 const {
   setTreasury,
@@ -230,7 +231,7 @@ module.exports = {
       const userCheckData = await getCheckDate(interaction.user.id);
       const treasuryBalanc = await getTreasuryData(1);
       const treasuryBalance = treasuryBalanc.amount;
-      console.log(treasuryBalance);
+
       if (userCheckData) {
         if (userCheckData.checkDate == date) {
           await interaction.editReply(`출석체크는 하루에 한번만 가능해~`);
@@ -244,6 +245,10 @@ module.exports = {
               interaction.user,
               String(checkAmount)
             );
+            await updateTreasury({
+              name: treasuryBalanc.name,
+              amount: treasuryBalanc.amount - checkAmount,
+            });
             await interaction.editReply(
               `${interaction.user}형 하이~ 오늘도 CAINO DAO 찾아와 줘서 고마워😉 10 BTC 낭낭하게 입금 완료!`
             );
@@ -260,6 +265,10 @@ module.exports = {
             checkDate: date,
           });
           await bankManager.withdrawBTC(interaction.user, String(checkAmount));
+          await updateTreasury({
+            name: treasuryBalanc.name,
+            amount: treasuryBalanc.amount - checkAmount,
+          });
           await interaction.editReply(
             `${interaction.user}형 하이~ 오늘도 CAINO DAO 찾아와 줘서 고마워😉 10 BTC 낭낭하게 입금 완료!`
           );
