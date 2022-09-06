@@ -58,6 +58,9 @@ module.exports = {
     )
     .addSubcommand((subcommand) =>
       subcommand.setName(`holders`).setDescription(`show holders`)
+    )
+    .addSubcommand((subcommand) =>
+      subcommand.setName(`check`).setDescription(`출석체크`)
     ),
   async execute(interaction) {
     //add
@@ -78,7 +81,7 @@ module.exports = {
       }
       const amount = interaction.options.getInteger(`amount`);
       const addUser = interaction.options.getUser(`user`);
-      const addPointResult = await addPoint({
+      await addPoint({
         discordId: addUser.id,
         addingpoint: amount,
       });
