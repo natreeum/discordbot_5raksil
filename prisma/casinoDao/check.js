@@ -37,7 +37,7 @@ async function updateCheckDate(data) {
     const userCheckDate = await getCheckDate(discordId);
 
     if (!userCheckDate) {
-      createUserCheckDate(discordId);
+      await createUserCheckDate(discordId);
     }
     const dateUpdateRes = await prisma.checkData.updateMany({
       where: {

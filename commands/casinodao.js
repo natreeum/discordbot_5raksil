@@ -235,6 +235,7 @@ module.exports = {
       if (userCheckData) {
         if (userCheckData.checkDate == date) {
           await interaction.editReply(`출석체크는 하루에 한번만 가능해~`);
+          return;
         } else {
           if (treasuryBalance >= checkAmount) {
             await updateCheckDate({
@@ -250,7 +251,7 @@ module.exports = {
               amount: treasuryBalanc.amount - checkAmount,
             });
             await interaction.editReply(
-              `${interaction.user}형 하이~ 오늘도 CAINO DAO 찾아와 줘서 고마워😉 10 BTC 낭낭하게 입금 완료!`
+              `${interaction.user}형 하이~ 오늘도 CASINO DAO 찾아와 줘서 고마워😉 10 BTC 낭낭하게 입금 완료!`
             );
           } else {
             await interaction.editReply(
@@ -270,7 +271,7 @@ module.exports = {
             amount: treasuryBalanc.amount - checkAmount,
           });
           await interaction.editReply(
-            `${interaction.user}형 하이~ 오늘도 CAINO DAO 찾아와 줘서 고마워😉 10 BTC 낭낭하게 입금 완료!`
+            `${interaction.user}형 하이~ 오늘도 CASINO DAO 찾아와 줘서 고마워😉 10 BTC 낭낭하게 입금 완료!`
           );
         } else {
           await interaction.editReply(
