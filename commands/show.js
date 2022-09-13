@@ -40,7 +40,9 @@ module.exports = {
     if (choice == 1) {
       message += `PvE는 나 로벅트와 BTC를 걸고 가위바위보를 할 수 있어\n사용법 : \`/혼자가위바위보 [가위 | 바위 | 보] [금액]\`\n\n\`\`\`[졌을 때] 베팅한 모든 BTC는 벅크셔해서웨이에서 좋은데 사용할거야\n[비겼을 때] 이긴 못했지만 비겼으니 ${
         drawRate * 100
-      }%는 뽀찌로 돌려줄거야. 왜 30%밖에 안돌려주냐고? 억울하다고? 억울하면 이기면 돼.\n[이겼을 때] 베팅한 금액의 ${winRate}배를 줄거야. 이정도면 많이 주지?\`\`\`최소베팅금액 : ${MINIMUM_BETAMOUNT}BTC\n최대베팅금액 : ${betLimit}BTC`;
+      }%는 뽀찌로 돌려줘. 비겼는데 왜 ${
+        drawRate * 100
+      }%밖에 안돌려주냐고? 이기면 2.5배로 돌려주잖아? 이겨서 따면 형이 이득이야.\n[이겼을 때] 베팅한 금액의 ${winRate}배로 돌려줘.\`\`\`최소베팅금액 : ${MINIMUM_BETAMOUNT}BTC\n최대베팅금액 : ${betLimit}BTC`;
     }
     await interaction.reply(`${message}`);
   },
