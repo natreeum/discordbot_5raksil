@@ -7,7 +7,7 @@ const FEE_TO_CALCULATABLE = 1 - fee / 100;
 
 // return Rate
 const winRate = 2.5;
-const drawRate = 0.3;
+const drawRate = 0.4;
 const holderDrawRate = 0.5;
 
 // bet limit
