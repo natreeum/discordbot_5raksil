@@ -127,6 +127,10 @@ module.exports = {
     //Deposit BTC
     // await bankManager.depositBTC(user, String(staticFee));
     await bankManager.depositBTC(user, String(betAmountBeforeFee));
+    await interaction.editReply(
+      `🤖 : ${betAmountBeforeFee} BTC를 받았습니다. 게임을 진행합니다.`
+    );
+    await delay(500);
 
     let winner = null;
 
