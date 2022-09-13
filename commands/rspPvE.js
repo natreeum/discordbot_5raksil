@@ -12,7 +12,10 @@ const util = require(`util`);
 const BankManager = require(`../bank/BankManager`);
 const bankManager = new BankManager();
 const wait = require("node:timers/promises").setTimeout;
-
+const messageList = [
+  "집가면서 국밥이라도 챙겨드시라고",
+  "집 갈때 택시타고 가시라고",
+]; //돌려드립니땅
 const channelId = ["962244779171799060", "939866440968863805"];
 // const channelId = ["1009096382432411819"];
 const gamedata = new Map();
@@ -219,10 +222,11 @@ module.exports = {
       const returnBTC = Math.round(betAmount * drawRate * 100) / 100;
       await bankManager.withdrawBTC(user, String(returnBTC));
       const resultBalance = await bankManager.getBalance(user);
+      const randNum = Math.floor(Math.random() * messageList.length);
 
       sendMessage += `\n\n**[DRAW]**\n\n\`\`\`ansi\n[1;36m឵[은은한 미소짓는][0m឵로벅트🤖 : 삐빕.. 비겼으니 베팅금액의 ${
         drawRate * 100
-      }%인 ${returnBTC} BTC🐞는 집가면서 국밥이라도 챙겨드시라고 돌려줍니땅 | 잔고 : [${
+      }%인 ${returnBTC} BTC🐞는 ${messageList[randNum]} 돌려줍니땅 | 잔고 : [${
         resultBalance.point.current
       } BTC]\`\`\``;
 
