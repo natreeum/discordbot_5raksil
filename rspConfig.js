@@ -11,7 +11,7 @@ const drawRate = 0.4;
 const holderDrawRate = 0.5;
 
 // bet limit
-const betLimit = 5000;
+const betLimit = 2000;
 
 // MinimumBetaAmount
 const MINIMUM_BETAMOUNT = 10;

@@ -1,21 +1,10 @@
 const { SlashCommandBuilder } = require("discord.js");
-const {
-  staticFee,
-  fee,
-  FEE_TO_CALCULATABLE,
-  winRate,
-  drawRate,
-  betLimit,
-  MINIMUM_BETAMOUNT,
-} = require("../rspConfig");
+const { staticFee, fee, FEE_TO_CALCULATABLE, winRate, drawRate, betLimit, MINIMUM_BETAMOUNT } = require("../rspConfig");
 const util = require(`util`);
 const BankManager = require(`../bank/BankManager`);
 const bankManager = new BankManager();
 const wait = require("node:timers/promises").setTimeout;
-const messageList = [
-  "집가면서 국밥이라도 챙겨드시라고",
-  "집 갈때 택시타고 가시라고",
-]; //돌려드립니땅
+const messageList = ["집가면서 국밥이라도 챙겨드시라고", "집 갈때 택시타고 가시라고", "뽀찌입니땅😉 다음에는 이겨보시라고"]; //돌려드립니땅
 const channelId = ["962244779171799060", "939866440968863805"];
 // const channelId = ["1009096382432411819"];
 const gamedata = new Map();
@@ -36,26 +25,11 @@ const chat = {
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("혼자가위바위보")
-    .setDescription(
-      "🤖 : 나와 가위바위보를 해서 이기면 베팅금액에 150%를 얹어서 돌려줍니다 삐빕"
-    )
+    .setDescription("🤖 : 나와 가위바위보를 해서 이기면 베팅금액에 150%를 얹어서 돌려줍니다 삐빕")
     .addIntegerOption((option) =>
-      option
-        .setName("choice")
-        .setDescription(`가위 바위 보 중 하나를 선택합니다.`)
-        .addChoices(
-          { name: "가위", value: 2 },
-          { name: "바위", value: 1 },
-          { name: "보", value: 3 }
-        )
-        .setRequired(true)
+      option.setName("choice").setDescription(`가위 바위 보 중 하나를 선택합니다.`).addChoices({ name: "가위", value: 2 }, { name: "바위", value: 1 }, { name: "보", value: 3 }).setRequired(true)
     )
-    .addIntegerOption((option) =>
-      option
-        .setName("bet")
-        .setDescription(`베팅 금액을 입력합니다.(수수료 : ${fee}%)`)
-        .setRequired(true)
-    ),
+    .addIntegerOption((option) => option.setName("bet").setDescription(`베팅 금액을 입력합니다.(수수료 : ${fee}%)`).setRequired(true)),
   async execute(interaction) {
     const user = interaction.user;
     //multiple game check
@@ -119,9 +93,7 @@ module.exports = {
     }
     if (storageBalance < betAmountBeforeFee * winRate) {
       await interaction.editReply({
-        content: `벅크셔해서웨이 금고에 형이 이겼을 때 형한테 줄 돈이 충분하지 않아... 조금만 더 적은 금액으로 베팅해줄 수 있어..?😭\n베팅가능금액 : ${
-          storageBalance / winRate
-        } 이하`,
+        content: `벅크셔해서웨이 금고에 형이 이겼을 때 형한테 줄 돈이 충분하지 않아... 조금만 더 적은 금액으로 베팅해줄 수 있어..?😭\n베팅가능금액 : ${storageBalance / winRate} 이하`,
         ephemeral: true,
       });
       return;
@@ -130,9 +102,7 @@ module.exports = {
     //Deposit BTC
     // await bankManager.depositBTC(user, String(staticFee));
     await bankManager.depositBTC(user, String(betAmountBeforeFee));
-    await interaction.editReply(
-      `🤖 : ${betAmountBeforeFee} BTC를 받았습니다. 게임을 진행합니다.`
-    );
+    await interaction.editReply(`🤖 : ${betAmountBeforeFee} BTC를 받았습니다. 게임을 진행합니다.`);
     await delay(500);
 
     let winner = null;
@@ -200,19 +170,11 @@ module.exports = {
 
     await delay(200);
 
-    let sendMessage = `${
-      chat[gamedata.get(firstuser).user]
-    } : ${firstuser}\n🆚\n${chat[gamedata.get(firstuser).com]} : ${seconduser}`;
+    let sendMessage = `${chat[gamedata.get(firstuser).user]} : ${firstuser}\n🆚\n${chat[gamedata.get(firstuser).com]} : ${seconduser}`;
 
-    if (
-      weapons[gamedata.get(firstuser).user].weakTo ===
-      gamedata.get(firstuser).com
-    ) {
+    if (weapons[gamedata.get(firstuser).user].weakTo === gamedata.get(firstuser).com) {
       winner = seconduser;
-    } else if (
-      weapons[gamedata.get(firstuser).user].strongTo ===
-      gamedata.get(firstuser).com
-    ) {
+    } else if (weapons[gamedata.get(firstuser).user].strongTo === gamedata.get(firstuser).com) {
       winner = firstuser;
     } else winner = "DRAW";
 
@@ -224,9 +186,7 @@ module.exports = {
       const resultBalance = await bankManager.getBalance(user);
       const randNum = Math.floor(Math.random() * messageList.length);
 
-      sendMessage += `\n\n**[DRAW]**\n\n\`\`\`ansi\n[1;36m឵[은은한 미소짓는][0m឵로벅트🤖 : 삐빕.. 비겼으니 베팅금액의 ${
-        drawRate * 100
-      }%인 ${returnBTC} BTC🐞는 ${messageList[randNum]} 돌려줍니땅 | 잔고 : [${
+      sendMessage += `\n\n**[DRAW]**\n\n\`\`\`ansi\n[1;36m឵[은은한 미소짓는][0m឵로벅트🤖 : 삐빕.. 비겼으니 베팅금액의 ${drawRate * 100}%인 ${returnBTC} BTC🐞는 ${messageList[randNum]} 돌려줍니땅 | 잔고 : [${
         resultBalance.point.current
       } BTC]\`\`\``;
 
@@ -243,7 +203,7 @@ module.exports = {
         sendMessage += `\n\n\`\`\`ansi\n[1;31m឵[절망하는][0m឵로벅트🤖 : 베팅금액의 ${winRate}배인 ${winBTC} BTC🐞를 드립니땅 삐빕 | 잔고 : [${resultBalance.point.current} BTC]\`\`\``;
       } else {
         const resultBalance = await bankManager.getBalance(user);
-        sendMessage += `\n\n\`\`\`ansi\n[1;34m឵[웃음짓는][0m឵로벅트🤖 : ${betAmountBeforeFee} BTC🐞는 벅크셔해서웨이에서 좋은 곳에 쓰겠습니땅! 감사합니땅! 😉 | 잔고 : [${resultBalance.point.current} BTC]\`\`\``;
+        sendMessage += `\n\n\`\`\`ansi\n[1;34m឵[웃음짓는][0m឵로벅트🤖 : ${betAmountBeforeFee} BTC🐞는 벅크셔해서웨이에서 좋은 곳에 쓰겠습니땅! 감사합니땅! | 잔고 : [${resultBalance.point.current} BTC]\`\`\``;
       }
       await interaction.editReply(`${sendMessage}`);
     }
