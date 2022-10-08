@@ -103,7 +103,7 @@ module.exports = {
   async execute(interaction) {
     // channel Lock
     if (!channelId.includes(interaction.channel.id)) {
-      let message = "가위바위보를 할 수 있는 채널을 알려줄게! : ";
+      let message = "슬롯머신은 다음 채널에서만 사용 가능해! : ";
       for (let i of channelId) {
         message += `<#${i}> `;
       }

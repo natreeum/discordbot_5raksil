@@ -8,15 +8,15 @@ module.exports = {
     console.log(`Ready! Logged in as ${client.user.tag}`);
 
     console.log("Setting up distribution cron job at 7AM every day.");
-    cron.schedule(
-      "0 7 * * *",
-      async () => {
-        console.log("distributing at 7 am every day");
-        distribute();
-      },
-      {
-        timezone: "Asia/Seoul",
-      }
-    );
+    // cron.schedule(
+    //   "0 7 * * *",
+    //   async () => {
+    //     console.log("distributing at 7 am every day");
+    //     distribute();
+    //   },
+    //   {
+    //     timezone: "Asia/Seoul",
+    //   }
+    // );
   },
 };
