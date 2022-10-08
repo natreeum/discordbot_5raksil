@@ -42,7 +42,7 @@ module.exports = {
         drawRate * 100
       }%는 뽀찌로 돌려줘. 비겼는데 왜 ${
         drawRate * 100
-      }%밖에 안돌려주냐고? 이기면 2.5배로 돌려주잖아? 이겨서 따면 형이 이득이야.\n[이겼을 때] 베팅한 금액의 ${winRate}배로 돌려줘.\`\`\`최소베팅금액 : ${MINIMUM_BETAMOUNT}BTC\n최대베팅금액 : ${betLimit}BTC`;
+      }%밖에 안돌려주냐고? 이기면 2배로 돌려주잖아? 이겨서 따면 형이 이득이야.\n[이겼을 때] 베팅한 금액의 ${winRate}배로 돌려줘.\`\`\`최소베팅금액 : ${MINIMUM_BETAMOUNT}BTC\n최대베팅금액 : ${betLimit}BTC`;
     }
     await interaction.reply(`${message}`);
   },
