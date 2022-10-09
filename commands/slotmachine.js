@@ -61,13 +61,13 @@ function defMessage(
     " " +
     check[2] +
     "`" +
-    defaultMessage[7] +
+    defaultMessage[6] +
     char[res[1]] +
-    defaultMessage[8] +
+    defaultMessage[7] +
     char[res[2]] +
-    defaultMessage[9] +
+    defaultMessage[8] +
     char[res[3]] +
-    defaultMessage[10];
+    defaultMessage[9];
   return message;
 }
 
