@@ -1,7 +1,5 @@
-const { SlashCommandBuilder } = require("discord.js");
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
-const { channel } = require("node:diagnostics_channel");
-const { send } = require("node:process");
+const { SlashCommandBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { CALCULATABLE_WINNERRATE, MINIMUM_BETAMOUNT } = require(`../rspConfig`);
 const {
   isUserDataExist,
@@ -9,7 +7,7 @@ const {
   updateUserData,
   getUserData,
 } = require(`../prisma/rspPvP`);
-const wait = require("node:timers/promises").setTimeout;
+const wait = require('node:timers/promises').setTimeout;
 
 const BankManager = require(`../bank/BankManager`);
 const bankManager = new BankManager();
@@ -17,7 +15,7 @@ const bankManager = new BankManager();
 // testserver channel
 // const channelId = ["1009096382432411819"];
 // bugcity channel
-const channelId = ["962244779171799060", "939866440968863805"];
+const channelId = ['962244779171799060', '939866440968863805'];
 const gamedata = new Map();
 
 const weapons = {
@@ -27,10 +25,10 @@ const weapons = {
 };
 
 const chat = {
-  1: ":fist:",
-  2: ":v:",
-  3: ":hand_splayed:",
-  4: "기권:flag_white:",
+  1: ':fist:',
+  2: ':v:',
+  3: ':hand_splayed:',
+  4: '기권:flag_white:',
 };
 
 const fee = 1;
@@ -38,23 +36,23 @@ const FEE_TO_CALCULATABLE = 1 - fee / 100;
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("가위바위보")
-    .setDescription("가위바위보 게임을 합니다.")
+    .setName('가위바위보')
+    .setDescription('가위바위보 게임을 합니다.')
     .addUserOption((option) =>
       option
-        .setName("selectuser")
-        .setDescription("겨루고 싶은 상대를 고릅니다.")
+        .setName('selectuser')
+        .setDescription('겨루고 싶은 상대를 고릅니다.')
         .setRequired(true)
     )
     .addIntegerOption((option) =>
       option
-        .setName("bet")
+        .setName('bet')
         .setDescription(`베팅 금액을 입력합니다.(수수료 : ${fee} BTC)`)
         .setRequired(true)
     ),
   async execute(interaction) {
     const firstuser = interaction.user;
-    const seconduser = interaction.options.getUser("selectuser");
+    const seconduser = interaction.options.getUser('selectuser');
     //multiple game check
     if (gamedata.has(firstuser)) {
       await interaction.reply({
@@ -65,8 +63,9 @@ module.exports = {
     }
     await interaction.deferReply();
     // channel Lock
-    if (!channelId.includes(interaction.channel.id)) {
-      let message = "가위바위보를 할 수 있는 채널을 알려줄게! : ";
+    const commandChannelId = interaction.channel.id;
+    if (!channelId.includes(commandChannelId)) {
+      let message = '가위바위보를 할 수 있는 채널을 알려줄게! : ';
       for (let i of channelId) {
         message += `<#${i}> `;
       }
@@ -110,7 +109,7 @@ module.exports = {
     if (seconduserSum == 0) {
       seconduserSum = 1;
     }
-    const betAmountBeforeFee = interaction.options.getInteger("bet");
+    const betAmountBeforeFee = interaction.options.getInteger('bet');
     const RAW_betAmount = betAmountBeforeFee * FEE_TO_CALCULATABLE;
     // const betAmount = Math.round(RAW_betAmount * 100) / 100;
     const betAmount = betAmountBeforeFee - fee;
@@ -182,20 +181,20 @@ module.exports = {
     const row = new ActionRowBuilder()
       .addComponents(
         new ButtonBuilder()
-          .setCustomId("scissors")
-          .setLabel("✌")
+          .setCustomId('scissors')
+          .setLabel('✌')
           .setStyle(ButtonStyle.Primary)
       )
       .addComponents(
         new ButtonBuilder()
-          .setCustomId("rock")
-          .setLabel("✊")
+          .setCustomId('rock')
+          .setLabel('✊')
           .setStyle(ButtonStyle.Success)
       )
       .addComponents(
         new ButtonBuilder()
-          .setCustomId("paper")
-          .setLabel("✋")
+          .setCustomId('paper')
+          .setLabel('✋')
           .setStyle(ButtonStyle.Danger)
       );
 
@@ -226,7 +225,7 @@ module.exports = {
 
     //button logic
     const filter = (i) =>
-      ["scissors", "rock", "paper"].includes(i.customId) &&
+      ['scissors', 'rock', 'paper'].includes(i.customId) &&
       [firstuser, seconduser].includes(i.user);
 
     const collector = interaction.channel.createMessageComponentCollector({
@@ -234,9 +233,9 @@ module.exports = {
       time: 6000,
     });
     const replied = new Map();
-    let firstuserMessage = "";
-    let seconduserMessage = "";
-    collector.on("collect", async (i) => {
+    let firstuserMessage = '';
+    let seconduserMessage = '';
+    collector.on('collect', async (i) => {
       // await i.update({
       //   content: `[✌  ✊  ✋]\n**__${
       //     betAmountBeforeFee
@@ -277,20 +276,20 @@ module.exports = {
         }
       }
 
-      if (i.customId === "scissors") {
+      if (i.customId === 'scissors') {
         if (i.user == firstuser) {
           gamedata.get(firstuser).choice = 2;
         } else if (i.user == seconduser) {
           gamedata.get(firstuser).seconduser.choice = 2;
         }
         // gamedata.set(i.user, 2);
-      } else if (i.customId === "rock") {
+      } else if (i.customId === 'rock') {
         if (i.user == firstuser) {
           gamedata.get(firstuser).choice = 1;
         } else if (i.user == seconduser) {
           gamedata.get(firstuser).seconduser.choice = 1;
         }
-      } else if (i.customId === "paper") {
+      } else if (i.customId === 'paper') {
         if (i.user == firstuser) {
           gamedata.get(firstuser).choice = 3;
         } else if (i.user == seconduser) {
@@ -299,19 +298,19 @@ module.exports = {
       }
     });
 
-    collector.on("end", async (collected) => {
+    collector.on('end', async (collected) => {
       function delay(ms) {
         return new Promise((resolve) => setTimeout(resolve, ms));
       }
 
       await delay(500);
-      let message = "처리중";
+      let message = '처리중';
       await interaction.editReply({
         content: message,
         components: [],
       });
       for (let i = 0; i < 3; i++) {
-        message += ".";
+        message += '.';
         await interaction.editReply({
           content: message,
           components: [],
@@ -357,14 +356,14 @@ module.exports = {
       }
       await delay(200);
 
-      let sendMessage = "";
+      let sendMessage = '';
       //무효핸들링
       //1유저가 안눌렀을 때
       if (
         gamedata.get(firstuser).choice === 0 &&
         gamedata.get(firstuser).seconduser.choice != 0
       ) {
-        winner = "invalid";
+        winner = 'invalid';
         gamedata.get(firstuser).choice = 4;
         sendMessage += `${firstuser}는 쫄았나봐 ㅋㅋㅋ\n에이 재미 없다. 무효!!!\n`;
         // player1 betAmount 지급
@@ -377,7 +376,7 @@ module.exports = {
         gamedata.get(firstuser).choice !== 0 &&
         gamedata.get(firstuser).seconduser.choice == 0
       ) {
-        winner = "invalid";
+        winner = 'invalid';
         gamedata.get(firstuser).seconduser.choice = 4;
         sendMessage += `${seconduser}는 쫄았나봐 ㅋㅋㅋ\n에이 재미 없다. 무효!!!\n`;
         // player1 betAmount 지급
@@ -390,7 +389,7 @@ module.exports = {
         gamedata.get(firstuser).choice === 0 &&
         gamedata.get(firstuser).seconduser.choice === 0
       ) {
-        winner = "invalid";
+        winner = 'invalid';
         gamedata.get(firstuser).choice = 4;
         gamedata.get(firstuser).seconduser.choice = 4;
         sendMessage += `🤔 뭐야 둘이 게임 안해??? 🤔\n`;
@@ -467,10 +466,10 @@ module.exports = {
           gamedata.get(firstuser).seconduser.choice
         )
           winner = firstuser;
-        else winner = "DRAW";
+        else winner = 'DRAW';
       }
 
-      if (winner === "DRAW") {
+      if (winner === 'DRAW') {
         sendMessage += `${
           chat[gamedata.get(firstuser).choice]
         } : ${firstuser}\n🆚\n${
@@ -482,7 +481,7 @@ module.exports = {
         // player2 betAmount 지급
         await bankManager.withdrawBTC(seconduser, betAmount);
         await interaction.editReply(`${sendMessage}`);
-      } else if (winner === "invalid") {
+      } else if (winner === 'invalid') {
         sendMessage += `${
           chat[gamedata.get(firstuser).choice]
         } : ${firstuser}\n🆚\n${
@@ -495,13 +494,11 @@ module.exports = {
         } : ${firstuser}\n🆚\n${
           chat[gamedata.get(firstuser).seconduser.choice]
         } : ${seconduser}\n\n**[WINNER]** : ${winner} \n\n승자에게는 ${winnerPrize} BTC🐞 가 지급됐어!`;
-        // ToDo : Bank
         // winner betAmount * 2 지급
         await bankManager.withdrawBTC(winner, winnerPrize);
         await interaction.editReply(`${sendMessage}`);
       }
       gamedata.delete(firstuser);
     });
-    // await
   },
 };
