@@ -63,7 +63,10 @@ module.exports = {
     }
     await interaction.deferReply();
     // channel Lock
-    const commandChannelId = interaction.channel.id;
+    let commandChannelId;
+    if (interaction.channel === undefined) {
+      commandChannelId = interaction.channelId;
+    } else commandChannelId = interaction.channel.id;
     if (!channelId.includes(commandChannelId)) {
       let message = '가위바위보를 할 수 있는 채널을 알려줄게! : ';
       for (let i of channelId) {
